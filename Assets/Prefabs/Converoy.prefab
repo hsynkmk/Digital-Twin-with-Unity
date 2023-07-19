@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 331227452603323701}
   - component: {fileID: 8129617113314236158}
   - component: {fileID: 4165901297054787010}
+  - component: {fileID: 5675459589883253966}
   m_Layer: 0
   m_Name: Top Belt
   m_TagString: Untagged
@@ -105,6 +106,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &5675459589883253966
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625767486998801983}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1136149230651688944
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,7 +570,7 @@ GameObject:
   - component: {fileID: 2470717502155999512}
   - component: {fileID: 5412172843070373011}
   m_Layer: 0
-  m_Name: Outer Outer
+  m_Name: Outer Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -755,6 +783,7 @@ GameObject:
   - component: {fileID: 252786452688401443}
   - component: {fileID: 1450542928719857219}
   - component: {fileID: 8045051467864384208}
+  - component: {fileID: 7972125195781243809}
   m_Layer: 0
   m_Name: Bottom Belt
   m_TagString: Untagged
@@ -848,6 +877,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &7972125195781243809
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7116920206685768442}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7796847868503855289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,9 +1143,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9034062226965874146}
+  - {fileID: 3855471082392453728}
   - {fileID: 5405464818058204934}
   - {fileID: 6267742861105267492}
-  - {fileID: 3855471082392453728}
   - {fileID: 6625745661833220829}
   - {fileID: 7951599412748815540}
   - {fileID: 7705746815599524440}
