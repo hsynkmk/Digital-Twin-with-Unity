@@ -7,45 +7,42 @@ public class ConveyorMover : MonoBehaviour
     public float speed = 1f;
     enum Direction { Forward, Backward }
 
-    [SerializeField] Direction chosenVec;
+    [SerializeField] Direction direction;
+    Rigidbody beltRigidbody;
+    Material beltMaterial;
 
-    Rigidbody myRigidbody;
-    Material myMaterial;
-
-    // Start is called before the first frame update
     void Start()
     {
-        myRigidbody = GetComponent<Rigidbody>();
-        myMaterial = GetComponent<Renderer>().material;
+        beltRigidbody = GetComponent<Rigidbody>();
+        beltMaterial = GetComponent<Renderer>().material;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        ScrollUV();
+        ScrollTexture();
     }
     void FixedUpdate()
     {
-        if (chosenVec == Direction.Forward)
+        if (direction == Direction.Forward)
         {
-            Vector3 posB = myRigidbody.position;
-            myRigidbody.position += Vector3.back * speed * Time.fixedDeltaTime;
-            myRigidbody.MovePosition(posB);
+            Vector3 posB = beltRigidbody.position;
+            beltRigidbody.position += Vector3.back * speed * Time.fixedDeltaTime;
+            beltRigidbody.MovePosition(posB);
         }
 
-        else if (chosenVec == Direction.Backward)
+
+        else if (direction == Direction.Backward)
         {
-            Vector3 posU = myRigidbody.position;
-            myRigidbody.position += Vector3.forward * speed * Time.fixedDeltaTime;
-            myRigidbody.MovePosition(posU);
+            Vector3 posU = beltRigidbody.position;
+            beltRigidbody.position += Vector3.forward * speed * Time.fixedDeltaTime;
+            beltRigidbody.MovePosition(posU);
         }
     }
 
-    void ScrollUV()
+    void ScrollTexture()
     {
-        var material = myMaterial;
-        Vector2 offset = material.mainTextureOffset;
-        offset += Vector2.left * speed * Time.deltaTime / material.mainTextureScale.y;
-        material.mainTextureOffset = offset;
+        Vector2 offset = beltMaterial.mainTextureOffset;
+        offset += Vector2.left * speed * Time.deltaTime / beltMaterial.mainTextureScale.y;
+        beltMaterial.mainTextureOffset = offset;
     }
 }
