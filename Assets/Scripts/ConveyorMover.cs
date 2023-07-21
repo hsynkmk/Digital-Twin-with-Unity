@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ConveyorMover : MonoBehaviour
 {
     public float speed = 1f;
-    enum Direction { Forward, Backward }
+    enum Direction { Forward, Backward, Left, Right }
 
     [SerializeField] Direction direction;
     Rigidbody beltRigidbody;
@@ -22,7 +24,7 @@ public class ConveyorMover : MonoBehaviour
         ScrollTexture();
     }
     void FixedUpdate()
-    {
+    { 
         if (direction == Direction.Forward)
         {
             Vector3 posB = beltRigidbody.position;
@@ -30,11 +32,24 @@ public class ConveyorMover : MonoBehaviour
             beltRigidbody.MovePosition(posB);
         }
 
-
         else if (direction == Direction.Backward)
         {
             Vector3 posU = beltRigidbody.position;
             beltRigidbody.position += Vector3.forward * speed * Time.fixedDeltaTime;
+            beltRigidbody.MovePosition(posU);
+        }
+
+        else if (direction == Direction.Left)
+        {
+            Vector3 posU = beltRigidbody.position;
+            beltRigidbody.position += Vector3.right * speed * Time.fixedDeltaTime;
+            beltRigidbody.MovePosition(posU);
+        }
+
+        else if (direction == Direction.Right)
+        {
+            Vector3 posU = beltRigidbody.position;
+            beltRigidbody.position += Vector3.left * speed * Time.fixedDeltaTime;
             beltRigidbody.MovePosition(posU);
         }
     }
