@@ -30,9 +30,6 @@ public class ComplexMachine : MonoBehaviour
 
             Destroy(collision.gameObject);
 
-            Debug.Log("Iron: " + ironCount + " Copper: " + copperCount + " Chip: " + chipCount);
-
-        
             if (ironCount >= requiredIron && copperCount >= requiredCopper && chipCount >= requiredChip)
             {
                 ProducePhone();
@@ -44,7 +41,6 @@ public class ComplexMachine : MonoBehaviour
     {
         Vector3 spawnPosition = transform.position + new Vector3(0, 1, 4);
         Instantiate(phone, spawnPosition, Quaternion.identity);
-        Debug.Log("Phone Produced");
         ironCount = 0;
         copperCount = 0;
         chipCount = 0;

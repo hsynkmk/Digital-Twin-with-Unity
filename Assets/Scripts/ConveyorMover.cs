@@ -13,7 +13,7 @@ public class ConveyorMover : MonoBehaviour
     enum Direction { Forward, Backward, Left, Right }
 
     // The selected direction of conveyor movement
-    [SerializeField] Direction direction;
+    Direction direction;
 
     // Reference to the Rigidbody component of the conveyor
     Rigidbody beltRigidbody;
@@ -26,6 +26,33 @@ public class ConveyorMover : MonoBehaviour
         // Get the references to the Rigidbody and Material components
         beltRigidbody = GetComponent<Rigidbody>();
         beltMaterial = GetComponent<Renderer>().material;
+
+        // Get the parent's rotation and convert it to positive values
+        Vector3 parentRotation = transform.parent.eulerAngles;
+
+        // Convert the parent's rotation to a value between 0 and 360
+        while(parentRotation.y < 0f)
+        {
+            parentRotation.y += 360f;
+        }
+
+        // Divide the parent's rotation by 90 to get a value between 0 and 4
+        int rotationDivision = (int)parentRotation.y / 90;
+
+        // Set the direction based on the value of divide
+        switch (rotationDivision)
+        {
+            case 0:
+                direction = Direction.Right; break;
+            case 1:
+                direction = Direction.Backward; break;
+            case 2:
+                direction = Direction.Left; break;
+            case 3:
+                direction = Direction.Forward; break;
+            case 4:
+                direction = Direction.Right; break;
+        }
     }
 
     void Update()
@@ -50,19 +77,13 @@ public class ConveyorMover : MonoBehaviour
         switch (direction)
         {
             case Direction.Forward:
-                beltRigidbody.position += Vector3.back * speed * Time.fixedDeltaTime;
-                break;
+                beltRigidbody.position += Vector3.back * speed * Time.fixedDeltaTime; break;
             case Direction.Backward:
-                beltRigidbody.position += Vector3.forward * speed * Time.fixedDeltaTime;
-                break;
+                beltRigidbody.position += Vector3.forward * speed * Time.fixedDeltaTime; break;
             case Direction.Left:
-                beltRigidbody.position += Vector3.right * speed * Time.fixedDeltaTime;
-                break;
+                beltRigidbody.position += Vector3.right * speed * Time.fixedDeltaTime; break;
             case Direction.Right:
-                beltRigidbody.position += Vector3.left * speed * Time.fixedDeltaTime;
-                break;
-            default:
-                break;
+                beltRigidbody.position += Vector3.left * speed * Time.fixedDeltaTime; break;
         }
 
         beltRigidbody.MovePosition(currentPos);
