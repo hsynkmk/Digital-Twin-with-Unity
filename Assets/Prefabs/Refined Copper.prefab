@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 5221582465674719278}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5774329733086431482
 GameObject:
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 3578195652272817450}
   m_Layer: 0
   m_Name: Refined Copper
-  m_TagString: Untagged
+  m_TagString: Refined Copper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

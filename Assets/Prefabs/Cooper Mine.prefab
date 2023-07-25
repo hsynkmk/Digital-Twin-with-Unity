@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4248860377905213481}
   m_Layer: 0
   m_Name: Cooper Mine
-  m_TagString: Untagged
+  m_TagString: Cooper Mine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 1299228574153066531}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7432710826275564982
 GameObject:
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 7422143862308090566}
   m_Layer: 0
   m_Name: Chip
-  m_TagString: Untagged
+  m_TagString: Chip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

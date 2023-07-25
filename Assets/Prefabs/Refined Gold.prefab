@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 572307595646700684}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5946916938542355099
 GameObject:
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 122799250454918702}
   m_Layer: 0
   m_Name: Refined Gold
-  m_TagString: Untagged
+  m_TagString: Refined Gold
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

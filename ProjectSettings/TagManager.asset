@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Cooper Mine
+  - Gold Mine
+  - Iron Mine
+  - Chip
+  - Refined Copper
+  - Refined Iron
+  - Refined Gold
   layers:
   - Default
   - TransparentFX
