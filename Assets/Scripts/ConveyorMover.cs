@@ -21,6 +21,8 @@ public class ConveyorMover : MonoBehaviour
     // Reference to the Material used for the conveyor's texture
     Material beltMaterial;
 
+
+
     void Start()
     {
         // Get the references to the Rigidbody and Material components
@@ -31,7 +33,7 @@ public class ConveyorMover : MonoBehaviour
         Vector3 parentRotation = transform.parent.eulerAngles;
 
         // Convert the parent's rotation to a value between 0 and 360
-        while(parentRotation.y < 0f)
+        while (parentRotation.y < 0f)
         {
             parentRotation.y += 360f;
         }
