@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
-    public GameObject[] buildObjects; 
+    [SerializeField] GameObject[] buildObjects; 
     private GameObject selectedObject; 
 
     private void Update()

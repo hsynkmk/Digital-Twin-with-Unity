@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class MineralProcessingMachine : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject[] prefabsToInstantiate;
+    private GameObject refinedObject;
+    List<GameObject> gameObjects;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if(other.gameObject.tag == "Gold Mine")
+        {
+            Destroy(other.gameObject);
+            refinedObject = Resources.Load<GameObject>("Prefabs/Refined Gold");
+            Instantiate(refinedObject, other.gameObject.transform.position, Quaternion.identity);
+        }
     }
 }
