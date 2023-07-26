@@ -1,14 +1,30 @@
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
 {
     [SerializeField] GameObject[] buildObjects; // array of objects to build
     private GameObject selectedObject; // the currently selected object
+    private int selectedObjectIndex;
     private GameObject previewObject; // the preview object
     private bool isPreviewing; // whether or not the preview object is active
     private Ray ray; // the ray to cast from the camera to the mouse position
     private RaycastHit hit; // the object that was hit by the ray
+    private int[] machineCounts;
+    public TextMeshProUGUI[] machineCountTexts; // UI text to display the number of machines left
+    
+    private void Start()
+    {
+        machineCounts = new int[buildObjects.Length];
+        for (int i = 0; i < machineCounts.Length; i++)
+        {
+            machineCounts[i] = 3; // Set the initial count to 5 for each machine type
+            UpdateMachineCountUI(i);
+        }
+    }
 
     private void Update()
     {
@@ -63,7 +79,10 @@ public class BuildManager : MonoBehaviour
     private void PlaceObject()
     {
         if (previewObject != null)
-        {
+        {   // Decrement the count and update the UI text
+            machineCounts[selectedObjectIndex]--;
+            UpdateMachineCountUI(selectedObjectIndex);
+
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Ground"))
@@ -80,6 +99,7 @@ public class BuildManager : MonoBehaviour
     private void InstantiateSelectedObject(Vector3 position)
     {
         Instantiate(selectedObject, position, Quaternion.identity);
+
     }
 
     // Select an object from the build menu
@@ -87,12 +107,28 @@ public class BuildManager : MonoBehaviour
     {
         if (index >= 0 && index < buildObjects.Length)
         {
-            selectedObject = buildObjects[index];
-            DestroyPreviewObject();
-            CreatePreviewObject();
-            isPreviewing = true;
+            if (machineCounts[index] > 0)
+            {
+                selectedObject = buildObjects[index];
+                DestroyPreviewObject();
+                CreatePreviewObject();
+                isPreviewing = true;
+                selectedObjectIndex = index;
+            }
+            EventSystem.current.SetSelectedGameObject(null); // cancel keyboard (pressing space etc.)
         }
-        EventSystem.current.SetSelectedGameObject(null); // cancel keyboard (pressing space etc.)
+    }
+
+    
+
+    private void UpdateMachineCountUI(int index)
+    {
+        //Debug.Log("S" +selectedObjectIndex);
+        //Debug.Log("I"+index);
+        if (index >= 0 && index < machineCountTexts.Length)
+        {
+            machineCountTexts[index].text = machineCounts[index].ToString();
+        }
     }
 
     // Destroy the preview object if it exists
