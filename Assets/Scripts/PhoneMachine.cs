@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.ConversionUtility;
 
 public class PhoneMachine : MonoBehaviour
 {
-    public GameObject phone; 
+    public GameObject phone;
+    private Light processingLight;
+    [SerializeField] int conversionTime = 3;
 
     private int ironCount = 0;
     private int copperCount = 0;
@@ -14,31 +18,48 @@ public class PhoneMachine : MonoBehaviour
     public int requiredCopper = 1;
     public int requiredChip = 1;
 
-    private void OnCollisionEnter(Collision collision)
+    private void Start()
+    {
+        processingLight = GetComponentInChildren<Light>();
+    }
+
+    private void OnCollisionEnter(Collision other)
     {
 
-        if (collision.gameObject.CompareTag("Refined Iron") || collision.gameObject.CompareTag("Refined Copper") || collision.gameObject.CompareTag("Chip"))
+        if (other.gameObject.CompareTag("Refined Iron") || other.gameObject.CompareTag("Refined Copper") || other.gameObject.CompareTag("Chip"))
         {
           
-            if (collision.gameObject.CompareTag("Refined Iron"))
+            if (other.gameObject.CompareTag("Refined Iron"))
                 ironCount++;
-            else if (collision.gameObject.CompareTag("Refined Copper"))
+            else if (other.gameObject.CompareTag("Refined Copper"))
                 copperCount++;
-            else if (collision.gameObject.CompareTag("Chip"))
+            else if (other.gameObject.CompareTag("Chip"))
                 chipCount++;
 
-            Destroy(collision.gameObject);
+            Destroy(other.gameObject);
 
             if (ironCount >= requiredIron && copperCount >= requiredCopper && chipCount >= requiredChip)
             {
-                ProducePhone();
+                StartCoroutine(ProducePhone(other.contacts[0].point, other.contacts[0].normal));
             }
         }
     }
 
-    private void ProducePhone()
+    IEnumerator ProducePhone(Vector3 collisionPoint, Vector3 collisionNormal)
     {
-        Vector3 spawnPosition = transform.position + new Vector3(0, 1, 4);
+        Vector3 offset = collisionNormal * 3f;
+        Vector3 spawnPosition = collisionPoint + offset;
+
+        for (int i = 0; i < 3; i++)
+        {
+            processingLight.enabled = true;
+            yield return new WaitForSeconds(0.2f); // Light on for 0.2 seconds
+            processingLight.enabled = false;
+            yield return new WaitForSeconds(0.2f); // Light off for 0.2 seconds
+        }
+
+        yield return new WaitForSeconds(conversionTime);
+
         Instantiate(phone, spawnPosition, Quaternion.identity);
         ironCount = 0;
         copperCount = 0;
