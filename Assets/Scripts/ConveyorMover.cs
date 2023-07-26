@@ -6,22 +6,11 @@ using UnityEngine.EventSystems;
 
 public class ConveyorMover : MonoBehaviour
 {
-    // The speed at which the conveyor moves
-    public float speed = 1f;
-
-    // Enumeration for different movement directions of the conveyor
-    enum Direction { Forward, Backward, Left, Right }
-
-    // The selected direction of conveyor movement
-    Direction direction;
-
-    // Reference to the Rigidbody component of the conveyor
-    Rigidbody beltRigidbody;
-
-    // Reference to the Material used for the conveyor's texture
-    Material beltMaterial;
-
-
+    public float speed = 1f;// The speed at which the conveyor moves
+    private enum Direction { Forward, Backward, Left, Right }// Enumeration for different movement directions of the conveyor
+    private Direction direction;// The selected direction of conveyor movement
+    private Rigidbody beltRigidbody;// Reference to the Rigidbody component of the conveyor
+    private Material beltMaterial;// Reference to the Material used for the conveyor's texture
 
     void Start()
     {

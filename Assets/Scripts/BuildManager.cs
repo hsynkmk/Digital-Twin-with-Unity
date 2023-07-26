@@ -7,8 +7,20 @@ public class BuildManager : MonoBehaviour
     private GameObject selectedObject;
     private GameObject previewObject;
     private bool isPreviewing;
+    private Ray ray;
+    private RaycastHit hit;
 
     private void Update()
+    {
+        HandlePreview();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            PlaceObject();
+        }
+    }
+
+    private void HandlePreview()
     {
         if (isPreviewing)
         {
@@ -19,43 +31,50 @@ public class BuildManager : MonoBehaviour
             }
             else
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Ground"))
                 {
-                    if (hit.collider.CompareTag("Ground"))
-                    {
-                        Vector3 targetPosition = hit.point;
-                        previewObject.transform.position = targetPosition;
-                        if (Input.GetKeyDown(KeyCode.Space))
-                        {
-                            previewObject.transform.Rotate(Vector3.up, 90f);
-                        }
-                    }
+                    MovePreviewObject(hit.point);
+
                 }
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (previewObject != null)
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit hit;
-                    isPreviewing = false;
-
-                    if (Physics.Raycast(ray, out hit))
-                    {
-                        if (hit.collider.CompareTag("Ground"))
-                        {
-                            Instantiate(previewObject, hit.point, Quaternion.identity);
-                        }
-                    }
-
-                    previewObject = null;
+                    RotatePreviewObject();
                 }
             }
         }
+    }
+
+    private void MovePreviewObject(Vector3 targetPosition)
+    {
+        previewObject.transform.position = targetPosition;
+    }
+
+    private void RotatePreviewObject()
+    {
+        previewObject.transform.Rotate(Vector3.up, 90f);
+    }
+
+    private void PlaceObject()
+    {
+        if (previewObject != null)
+        {
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Ground"))
+            {
+                InstantiateSelectedObject(hit.point);
+            }
+
+            previewObject = null;
+            isPreviewing = false;
+        }
+    }
+
+    private void InstantiateSelectedObject(Vector3 position)
+    {
+        Instantiate(selectedObject, position, Quaternion.identity);
     }
 
     public void SelectObject(int index)
@@ -63,13 +82,23 @@ public class BuildManager : MonoBehaviour
         if (index >= 0 && index < buildObjects.Length)
         {
             selectedObject = buildObjects[index];
-            if (previewObject != null)
-            {
-                Destroy(previewObject);
-            }
-            previewObject = Instantiate(selectedObject);
+            DestroyPreviewObject();
+            CreatePreviewObject();
             isPreviewing = true;
         }
         EventSystem.current.SetSelectedGameObject(null); // cancel keyboard (pressing space etc.)
+    }
+
+    private void DestroyPreviewObject()
+    {
+        if (previewObject != null)
+        {
+            Destroy(previewObject);
+        }
+    }
+
+    private void CreatePreviewObject()
+    {
+        previewObject = Instantiate(selectedObject);
     }
 }

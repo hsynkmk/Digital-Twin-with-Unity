@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2255883058062880008}
   - component: {fileID: 3263871930309436063}
   - component: {fileID: 4248860377905213481}
-  - component: {fileID: -7979637381119780514}
+  - component: {fileID: 741675508897807400}
   m_Layer: 0
   m_Name: Cooper Mine
   m_TagString: Cooper Mine
@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9160164590106295100
 MeshFilter:
@@ -134,7 +134,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &-7979637381119780514
+--- !u!114 &741675508897807400
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,8 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3317808742607447534}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef795ad579a82d7448b8ec10f1a67a52, type: 3}
+  m_Script: {fileID: 11500000, guid: e4997cb4a4280a54f8fca52807aefcd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  processedMaterials: []
-  phonePrefab: {fileID: 7184336676490770819, guid: ba8053b77ac77ed4894acf4e0ff4e165, type: 3}
+  refinedObject: {fileID: 702917671137361029, guid: b7ebaffee6735f44c98fd113dbb426d7, type: 3}

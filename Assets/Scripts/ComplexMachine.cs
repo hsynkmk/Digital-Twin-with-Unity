@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ComplexMachine : MonoBehaviour
 {
-
     public GameObject phone; 
 
     private int ironCount = 0;
