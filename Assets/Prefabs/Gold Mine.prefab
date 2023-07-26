@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4313930386363296290}
   - component: {fileID: 6009882689389478741}
   - component: {fileID: 8309396807988992467}
-  - component: {fileID: 1698846708575773692}
   m_Layer: 0
   m_Name: Gold Mine
   m_TagString: Gold Mine
@@ -134,16 +133,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1698846708575773692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1014426683404360491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4997cb4a4280a54f8fca52807aefcd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  refinedObject: {fileID: 900020490720067675, guid: 6339b2a180a278c4ab05bce52c180977, type: 3}

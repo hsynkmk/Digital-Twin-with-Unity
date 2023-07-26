@@ -11,16 +11,19 @@ public class ResourceConversion : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Mineral Machine"))
         {
-            Destroy(gameObject);
-            PerformConversion();
+            StartCoroutine(PerformConversion());
         }
     }
 
-    private void PerformConversion()
+    IEnumerator PerformConversion()
     {
+        Vector3 vector3 = transform.position;
+        Quaternion quaternion = Quaternion.identity;
 
-            Vector3 spawnPosition = transform.position + new Vector3(4, 1, 0);
-            Instantiate(refinedObject, spawnPosition, Quaternion.identity);
+        yield return new WaitForSeconds(3);
 
+        Vector3 spawnPosition = vector3 + new Vector3(4, 1, 0);
+        Instantiate(refinedObject, spawnPosition, quaternion);
+        Destroy(gameObject);
     }
 }

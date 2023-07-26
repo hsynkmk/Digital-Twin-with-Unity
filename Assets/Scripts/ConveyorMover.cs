@@ -18,6 +18,14 @@ public class ConveyorMover : MonoBehaviour
         beltRigidbody = GetComponent<Rigidbody>();
         beltMaterial = GetComponent<Renderer>().material;
 
+
+    }
+
+    void Update()
+    {
+        // Scroll the conveyor texture
+        ScrollTexture();
+
         // Get the parent's rotation and convert it to positive values
         Vector3 parentRotation = transform.parent.eulerAngles;
 
@@ -44,12 +52,6 @@ public class ConveyorMover : MonoBehaviour
             case 4:
                 direction = Direction.Right; break;
         }
-    }
-
-    void Update()
-    {
-        // Scroll the conveyor texture
-        ScrollTexture();
     }
 
     void FixedUpdate()

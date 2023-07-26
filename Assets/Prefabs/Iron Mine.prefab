@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8049015031277368206}
   - component: {fileID: 1136430135963104995}
   - component: {fileID: 5129984688179971537}
-  - component: {fileID: -8597190595812906115}
   m_Layer: 0
   m_Name: Iron Mine
   m_TagString: Iron Mine
@@ -134,16 +133,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5730322, y: 0.22434883, z: 0.6036465}
   m_Center: {x: 0.0000024437904, y: 0.112174414, z: 0.000000461936}
---- !u!114 &-8597190595812906115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3168806528722713109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4997cb4a4280a54f8fca52807aefcd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  refinedObject: {fileID: 8678765234311239088, guid: fe8467d54b3fca844bae2f5dcd4108ca, type: 3}

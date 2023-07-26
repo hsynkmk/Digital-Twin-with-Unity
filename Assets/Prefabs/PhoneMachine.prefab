@@ -239,7 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6081697106690816723}
   m_Layer: 0
-  m_Name: Second Machine
+  m_Name: PhoneMachine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

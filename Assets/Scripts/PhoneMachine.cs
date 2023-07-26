@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComplexMachine : MonoBehaviour
+public class PhoneMachine : MonoBehaviour
 {
     public GameObject phone; 
 
