@@ -12,6 +12,9 @@ TagManager:
   - Refined Copper
   - Refined Iron
   - Refined Gold
+  - Mineral Machine
+  - Conveyor
+  - Silicon
   layers:
   - Default
   - TransparentFX
