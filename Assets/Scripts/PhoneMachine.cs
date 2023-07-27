@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static Unity.VisualScripting.ConversionUtility;
 
@@ -8,6 +9,8 @@ public class PhoneMachine : MonoBehaviour
 {
     public GameObject phone;
     private Light processingLight;
+    [SerializeField] TextMeshProUGUI phoneCountText;
+    private int phoneCount;
     [SerializeField] int conversionTime = 3;
 
     private int ironCount = 0;
@@ -61,6 +64,8 @@ public class PhoneMachine : MonoBehaviour
         yield return new WaitForSeconds(conversionTime);
 
         Instantiate(phone, spawnPosition, Quaternion.identity);
+        phoneCount++;
+        phoneCountText.text = "Phone: " + phoneCount;
         ironCount = 0;
         copperCount = 0;
         chipCount = 0;
