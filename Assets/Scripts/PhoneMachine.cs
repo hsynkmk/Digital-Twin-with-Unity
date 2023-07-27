@@ -1,15 +1,15 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static Unity.VisualScripting.ConversionUtility;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PhoneMachine : MonoBehaviour
 {
     public GameObject phone;
     private Light processingLight;
-    [SerializeField] TextMeshProUGUI phoneCountText;
+    private TextMeshProUGUI phoneCountText;
     private int phoneCount;
     [SerializeField] int conversionTime = 3;
 
@@ -24,6 +24,7 @@ public class PhoneMachine : MonoBehaviour
     private void Start()
     {
         processingLight = GetComponentInChildren<Light>();
+        phoneCountText = GameObject.FindGameObjectWithTag("Phone Count").GetComponent<TextMeshProUGUI>();
     }
 
     private void OnCollisionEnter(Collision other)
@@ -64,8 +65,9 @@ public class PhoneMachine : MonoBehaviour
         yield return new WaitForSeconds(conversionTime);
 
         Instantiate(phone, spawnPosition, Quaternion.identity);
+        phoneCount = int.Parse(phoneCountText.text);
         phoneCount++;
-        phoneCountText.text = "Phone: " + phoneCount;
+        phoneCountText.text = phoneCount.ToString();
         ironCount = 0;
         copperCount = 0;
         chipCount = 0;

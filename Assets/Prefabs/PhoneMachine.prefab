@@ -281,7 +281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6081697106690816723}
-  - component: {fileID: -8201944012883039714}
+  - component: {fileID: 3509853009349819755}
   - component: {fileID: 5220049917384443026}
   m_Layer: 0
   m_Name: PhoneMachine
@@ -309,7 +309,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8201944012883039714
+--- !u!114 &3509853009349819755
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -322,6 +322,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phone: {fileID: 7184336676490770819, guid: ba8053b77ac77ed4894acf4e0ff4e165, type: 3}
+  phoneCountText:
+  - {fileID: 0}
   conversionTime: 3
   requiredIron: 1
   requiredCopper: 1

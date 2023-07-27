@@ -22,7 +22,7 @@ public class BuildManager : MonoBehaviour
         machineCounts = new int[buildObjects.Length];
         for (int i = 0; i < machineCounts.Length; i++)
         {
-            machineCounts[i] = 3; // Set the initial count to 5 for each machine type
+            machineCounts[i] = 4; // Set the initial count to 5 for each machine type
             UpdateMachineCountUI(i);
         }
     }
@@ -146,7 +146,7 @@ public class BuildManager : MonoBehaviour
     private bool IsMineType(int index)
     {
         // Assuming mine types are placed at the start of the buildObjects array
-        return index >= 3 && index < 7;
+        return index >= 4 && index < 8;
     }
 
     private void UpdateMachineCountUI(int index)
