@@ -42,7 +42,7 @@ public class MineralProcessingMachine : MonoBehaviour
     {
         Quaternion rotation = Quaternion.identity;
         Vector3 offset = collisionNormal * 3f;
-        Vector3 spawnPosition = collisionPoint + offset + new Vector3(-1,0,0);
+        Vector3 spawnPosition = collisionPoint + offset + new Vector3(0,0,0);
         GameObject refinedResult = refinedObjects[mineralIndex];
 
         // Blink the light three times

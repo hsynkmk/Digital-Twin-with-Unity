@@ -146,7 +146,7 @@ public class BuildManager : MonoBehaviour
     private bool IsMineType(int index)
     {
         // Assuming mine types are placed at the start of the buildObjects array
-        return index >= 3 && index < 6;
+        return index >= 3 && index < 7;
     }
 
     private void UpdateMachineCountUI(int index)
