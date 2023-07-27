@@ -15,7 +15,8 @@ public class BuildManager : MonoBehaviour
     private RaycastHit hit; // the object that was hit by the ray
     private int[] machineCounts;
     public TextMeshProUGUI[] machineCountTexts; // UI text to display the number of machines left
-    
+    private int selectedMineTypeIndex = -1;
+
     private void Start()
     {
         machineCounts = new int[buildObjects.Length];
@@ -78,7 +79,20 @@ public class BuildManager : MonoBehaviour
     // Place the selected object in the scene at the target position
     private void PlaceObject()
     {
-        if (previewObject != null)
+        if (selectedMineTypeIndex != -1)
+        {
+            // The user has selected a mine type and should now click a conveyor
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Conveyor"))
+            {
+                machineCounts[selectedObjectIndex]--;
+                UpdateMachineCountUI(selectedObjectIndex);
+                InstantiateSelectedObject(hit.point);
+                selectedMineTypeIndex = -1; // Reset the selected mine type index
+            }
+        }
+
+        else if (previewObject != null)
         {   // Decrement the count and update the UI text
             machineCounts[selectedObjectIndex]--;
             UpdateMachineCountUI(selectedObjectIndex);
@@ -107,19 +121,33 @@ public class BuildManager : MonoBehaviour
     {
         if (index >= 0 && index < buildObjects.Length)
         {
+
             if (machineCounts[index] > 0)
             {
+                if (IsMineType(index))
+                {
+                    // Set the selected mine type index and return
+                    selectedMineTypeIndex = index;
+                    selectedObject = buildObjects[index];
+                    selectedObjectIndex = index;
+                    return;
+                }
+                selectedObjectIndex = index;
                 selectedObject = buildObjects[index];
                 DestroyPreviewObject();
                 CreatePreviewObject();
                 isPreviewing = true;
-                selectedObjectIndex = index;
+                
             }
             EventSystem.current.SetSelectedGameObject(null); // cancel keyboard (pressing space etc.)
         }
     }
 
-    
+    private bool IsMineType(int index)
+    {
+        // Assuming mine types are placed at the start of the buildObjects array
+        return index >= 3 && index < 6;
+    }
 
     private void UpdateMachineCountUI(int index)
     {
