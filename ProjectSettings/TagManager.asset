@@ -15,6 +15,7 @@ TagManager:
   - Mineral Machine
   - Conveyor
   - Silicon
+  - Phone Count
   layers:
   - Default
   - TransparentFX

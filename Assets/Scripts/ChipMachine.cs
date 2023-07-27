@@ -1,42 +1,41 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChipMachine : MonoBehaviour
 {
-    [SerializeField] GameObject silicon;
-    [SerializeField] GameObject chip;
-    [SerializeField] int conversionTime = 3;
-
+    [SerializeField] private GameObject silicon; // Reference to the silicon object
+    [SerializeField] private GameObject chip; // Reference to the chip prefab
+    [SerializeField] private float blinkDuration = 0.2f; // Duration for each light blink
+    [SerializeField] private int blinkCount = 3; // Number of times to blink the light
+    [SerializeField] private float conversionTime = 2f; // Time it takes to convert silicon into a chip
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag.Equals("Silicon"))
+        if (other.gameObject.CompareTag("Silicon"))
         {
             Destroy(other.gameObject);
             StartCoroutine(PerformConversion(other.contacts[0].point, other.contacts[0].normal));
         }
     }
 
-
-    IEnumerator PerformConversion(Vector3 collisionPoint, Vector3 collisionNormal)
+    private IEnumerator PerformConversion(Vector3 collisionPoint, Vector3 collisionNormal)
     {
-        Quaternion rotation = Quaternion.identity;
-        Vector3 offset = collisionNormal * 5f;
-        Vector3 spawnPosition = collisionPoint + offset + new Vector3(0, 0, 0);
+        Vector3 offset = collisionNormal * 3f + new Vector3(-1, 0, 0); // Offset to spawn the chip slightly away from the collision point
+        Vector3 spawnPosition = collisionPoint + offset; // Position to spawn the chip
 
-        // Blink the light three times
-    /*    for (int i = 0; i < 3; i++)
+        // Blink the light multiple times to indicate processing
+        Light processingLight = GetComponentInChildren<Light>();
+
+        for (int i = 0; i < blinkCount; i++)
         {
             processingLight.enabled = true;
-            yield return new WaitForSeconds(0.2f); // Light on for 0.2 seconds
+            yield return new WaitForSeconds(blinkDuration);
             processingLight.enabled = false;
-            yield return new WaitForSeconds(0.2f); // Light off for 0.2 seconds
-        }*/
+            yield return new WaitForSeconds(blinkDuration);
+        }
 
-        yield return new WaitForSeconds(conversionTime);
+        yield return new WaitForSeconds(conversionTime); // Wait for the conversion time
 
-        Instantiate(chip, spawnPosition, rotation);
+        Instantiate(chip, spawnPosition, Quaternion.identity); // Create a new chip at the spawn position
     }
 }
