@@ -85,7 +85,6 @@ public class BuildManager : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Conveyor"))
             {
-                objectCounts[selectedObjectIndex]--;
                 DecreaseObjectCount(selectedObjectIndex);
                 InstantiateSelectedObject(hit.point);
                 selectedMineTypeIndex = -1; // Reset the selected mine type index
@@ -94,7 +93,6 @@ public class BuildManager : MonoBehaviour
         else if (previewObject != null)
         {
             // Decrement the count and update the UI text
-            objectCounts[selectedObjectIndex]--;
             DecreaseObjectCount(selectedObjectIndex);
 
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
