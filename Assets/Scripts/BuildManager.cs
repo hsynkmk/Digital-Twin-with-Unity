@@ -31,7 +31,7 @@ public class BuildManager : MonoBehaviour
     {
         HandlePreview();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             PlaceObject();
         }
@@ -42,6 +42,19 @@ public class BuildManager : MonoBehaviour
     {
         if (isPreviewing)
         {
+            // Hide preview when hovering over a UI element
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                if (previewObject.activeSelf)
+                {
+                    previewObject.SetActive(false);
+                    return;
+                }
+            }
+            else if (!previewObject.activeSelf)
+                previewObject.SetActive(true);
+
+            // Right click to cancel previewing
             if (Input.GetMouseButtonDown(1))
             {
                 DestroyPreviewObject();
@@ -75,6 +88,7 @@ public class BuildManager : MonoBehaviour
     {
         previewObject.transform.Rotate(Vector3.up, 90f);
     }
+
 
     // Place the selected object in the scene at the target position
     private void PlaceObject()
@@ -121,7 +135,7 @@ public class BuildManager : MonoBehaviour
             if (objectCounts[index] > 0)
             {
                 if (IsMineType(index))
-                {
+                {previewObject=null; isPreviewing = false;
                     // Set the selected mine type index and return
                     selectedMineTypeIndex = index;
                     selectedObject = buildObjects[index];

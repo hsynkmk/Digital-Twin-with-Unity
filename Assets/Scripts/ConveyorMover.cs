@@ -106,15 +106,15 @@ public class ConveyorMover : MonoBehaviour
     {
         // Center the collided object on the conveyor
 
-            Vector3 conveyorCenter = transform.position;
-            Vector3 objectBoundsCenter = collision.collider.bounds.center;
+        Vector3 conveyorCenter = transform.position;
+        Vector3 objectBoundsCenter = collision.collider.bounds.center;
 
-            // Calculate the offset to move the object's pivot to the center of the conveyor
-            Vector3 offset = CalculateCenteringOffset(conveyorCenter, objectBoundsCenter);
+        // Calculate the offset to move the object's pivot to the center of the conveyor
+        Vector3 offset = CalculateCenteringOffset(conveyorCenter, objectBoundsCenter);
 
-            // Move the object's transform by the offset to place its pivot on the center of the conveyor
-            collision.transform.position += offset;
-        
+        // Move the object's transform by the offset to place its pivot on the center of the conveyor
+        collision.transform.position += offset;
+
     }
 
     private Vector3 CalculateCenteringOffset(Vector3 conveyorCenter, Vector3 objectBoundsCenter)
