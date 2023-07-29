@@ -135,8 +135,10 @@ public class BuildManager : MonoBehaviour
             if (objectCounts[index] > 0)
             {
                 if (IsMineType(index))
-                {previewObject=null; isPreviewing = false;
+                {
                     // Set the selected mine type index and return
+                    previewObject = null;
+                    isPreviewing = false;
                     selectedMineTypeIndex = index;
                     selectedObject = buildObjects[index];
                     selectedObjectIndex = index;
