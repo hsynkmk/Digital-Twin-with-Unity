@@ -4,19 +4,15 @@ using UnityEngine;
 
 public class MineralProcessingMachine : MonoBehaviour
 {
-    [SerializeField] GameObject[] mineralsToProcess;
-    [SerializeField] GameObject[] refinedObjects;
-    [SerializeField] int conversionTime = 3;
-    private Light processingLight;
-
-    private void Start()
-    {
-        processingLight = GetComponentInChildren<Light>();
-    }
+    [SerializeField] private GameObject[] mineralsToProcess; // Array of mineral prefabs to process
+    [SerializeField] private GameObject[] refinedObjects; // Array of refined object prefabs
+    [SerializeField] private float blinkDuration = 0.2f; // Duration for each light blink
+    [SerializeField] private int blinkCount = 3; // Number of times to blink the light
+    [SerializeField] private float conversionTime = 2f; // Duration of the conversion process
 
     private void OnCollisionEnter(Collision other)
     {
-        // Check if the collided object is one of the minerals to process
+        // Check if the collided object is a mineral to process
         int index = GetMineralIndex(other.gameObject);
         if (index != -1)
         {
@@ -30,32 +26,35 @@ public class MineralProcessingMachine : MonoBehaviour
     {
         for (int i = 0; i < mineralsToProcess.Length; i++)
         {
-            if (obj.tag.Equals(mineralsToProcess[i].tag))
+            if (obj.CompareTag(mineralsToProcess[i].tag))
             {
                 return i;
             }
         }
-        return -1; // Object not found in the mineralsToProcess array
+        return -1; // Return -1 if the collided object is not found in the mineralsToProcess array
     }
 
-    IEnumerator PerformConversion(int mineralIndex, Vector3 collisionPoint, Vector3 collisionNormal)
+    // Perform the conversion process for the given mineral index
+    private IEnumerator PerformConversion(int mineralIndex, Vector3 collisionPoint, Vector3 collisionNormal)
     {
-        Quaternion rotation = Quaternion.identity;
-        Vector3 offset = collisionNormal * 3f;
-        Vector3 spawnPosition = collisionPoint + offset + new Vector3(0,0,0);
+        Vector3 offset = collisionNormal * 3f + new Vector3(-1, 0, 0);
+        Vector3 spawnPosition = collisionPoint + offset;
         GameObject refinedResult = refinedObjects[mineralIndex];
 
-        // Blink the light three times
-        for (int i = 0; i < 3; i++)
+        Light processingLight = GetComponentInChildren<Light>();
+        // Blink the light for the specified number of times
+        for (int i = 0; i < blinkCount; i++)
         {
             processingLight.enabled = true;
-            yield return new WaitForSeconds(0.2f); // Light on for 0.2 seconds
+            yield return new WaitForSeconds(blinkDuration);
             processingLight.enabled = false;
-            yield return new WaitForSeconds(0.2f); // Light off for 0.2 seconds
+            yield return new WaitForSeconds(blinkDuration);
         }
 
+        // Wait for the conversion time
         yield return new WaitForSeconds(conversionTime);
 
-        Instantiate(refinedResult, spawnPosition, rotation);
+        // Instantiate the refined object at the spawn position
+        Instantiate(refinedResult, spawnPosition, Quaternion.identity);
     }
 }

@@ -1,28 +1,28 @@
-using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] buildObjects; // array of objects to build
-    private GameObject selectedObject; // the currently selected object
-    private int selectedObjectIndex;
-    private GameObject previewObject; // the preview object
-    private bool isPreviewing; // whether or not the preview object is active
-    private Ray ray; // the ray to cast from the camera to the mouse position
-    private RaycastHit hit; // the object that was hit by the ray
-    private int[] machineCounts;
-    public TextMeshProUGUI[] machineCountTexts; // UI text to display the number of machines left
-    private int selectedMineTypeIndex = -1;
+    [SerializeField] private GameObject[] buildObjects; // Array of objects to build
+    [SerializeField] private TextMeshProUGUI[] objectCountTexts; // UI text to display the number of machines left
+
+    private GameObject selectedObject; // The currently selected object
+    private GameObject previewObject; // The preview object
+    private RaycastHit hit; // The object that was hit by the ray
+    private Ray ray; // The ray to cast from the camera to the mouse position
+    private bool isPreviewing; // Whether or not the preview object is active
+    private int selectedObjectIndex; // Index of the currently selected object in the buildObjects array
+    private int[] objectCounts; // Array to store the counts of available machines
+    private int selectedMineTypeIndex = -1; // Index of the selected mine type, -1 means no mine type is selected
 
     private void Start()
     {
-        machineCounts = new int[buildObjects.Length];
-        for (int i = 0; i < machineCounts.Length; i++)
+        objectCounts = new int[buildObjects.Length];
+        for (int i = 0; i < objectCounts.Length; i++)
         {
-            machineCounts[i] = 4; // Set the initial count to 5 for each machine type
+            objectCounts[i] = 4; // Set the initial count to 4 for each machine type
             UpdateMachineCountUI(i);
         }
     }
@@ -31,7 +31,7 @@ public class BuildManager : MonoBehaviour
     {
         HandlePreview();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             PlaceObject();
         }
@@ -42,6 +42,19 @@ public class BuildManager : MonoBehaviour
     {
         if (isPreviewing)
         {
+            // Hide preview when hovering over a UI element
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                if (previewObject.activeSelf)
+                {
+                    previewObject.SetActive(false);
+                    return;
+                }
+            }
+            else if (!previewObject.activeSelf)
+                previewObject.SetActive(true);
+
+            // Right click to cancel previewing
             if (Input.GetMouseButtonDown(1))
             {
                 DestroyPreviewObject();
@@ -76,6 +89,7 @@ public class BuildManager : MonoBehaviour
         previewObject.transform.Rotate(Vector3.up, 90f);
     }
 
+
     // Place the selected object in the scene at the target position
     private void PlaceObject()
     {
@@ -85,17 +99,15 @@ public class BuildManager : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Conveyor"))
             {
-                machineCounts[selectedObjectIndex]--;
-                UpdateMachineCountUI(selectedObjectIndex);
+                DecreaseObjectCount(selectedObjectIndex);
                 InstantiateSelectedObject(hit.point);
                 selectedMineTypeIndex = -1; // Reset the selected mine type index
             }
         }
-
         else if (previewObject != null)
-        {   // Decrement the count and update the UI text
-            machineCounts[selectedObjectIndex]--;
-            UpdateMachineCountUI(selectedObjectIndex);
+        {
+            // Decrement the count and update the UI text
+            DecreaseObjectCount(selectedObjectIndex);
 
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -113,7 +125,6 @@ public class BuildManager : MonoBehaviour
     private void InstantiateSelectedObject(Vector3 position)
     {
         Instantiate(selectedObject, position, Quaternion.identity);
-
     }
 
     // Select an object from the build menu
@@ -121,12 +132,13 @@ public class BuildManager : MonoBehaviour
     {
         if (index >= 0 && index < buildObjects.Length)
         {
-
-            if (machineCounts[index] > 0)
+            if (objectCounts[index] > 0)
             {
                 if (IsMineType(index))
                 {
                     // Set the selected mine type index and return
+                    previewObject = null;
+                    isPreviewing = false;
                     selectedMineTypeIndex = index;
                     selectedObject = buildObjects[index];
                     selectedObjectIndex = index;
@@ -137,9 +149,8 @@ public class BuildManager : MonoBehaviour
                 DestroyPreviewObject();
                 CreatePreviewObject();
                 isPreviewing = true;
-                
             }
-            EventSystem.current.SetSelectedGameObject(null); // cancel keyboard (pressing space etc.)
+            EventSystem.current.SetSelectedGameObject(null); // Cancel keyboard (pressing space etc.)
         }
     }
 
@@ -151,11 +162,9 @@ public class BuildManager : MonoBehaviour
 
     private void UpdateMachineCountUI(int index)
     {
-        //Debug.Log("S" +selectedObjectIndex);
-        //Debug.Log("I"+index);
-        if (index >= 0 && index < machineCountTexts.Length)
+        if (index >= 0 && index < objectCountTexts.Length)
         {
-            machineCountTexts[index].text = machineCounts[index].ToString();
+            objectCountTexts[index].text = objectCounts[index].ToString();
         }
     }
 
@@ -172,5 +181,15 @@ public class BuildManager : MonoBehaviour
     private void CreatePreviewObject()
     {
         previewObject = Instantiate(selectedObject);
+    }
+
+    // Decrease the count of an object at the given index
+    private void DecreaseObjectCount(int index)
+    {
+        if (objectCounts[index] > 0)
+        {
+            objectCounts[index]--;
+            UpdateMachineCountUI(index);
+        }
     }
 }
