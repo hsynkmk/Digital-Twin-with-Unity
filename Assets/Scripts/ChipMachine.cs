@@ -20,8 +20,10 @@ public class ChipMachine : MonoBehaviour
 
     private IEnumerator PerformConversion(Vector3 collisionPoint, Vector3 collisionNormal)
     {
-        Vector3 offset = collisionNormal * 3f + new Vector3(-1, 0, 0); // Offset to spawn the chip slightly away from the collision point
-        Vector3 spawnPosition = collisionPoint + offset; // Position to spawn the chip
+        // Offset to spawn the chip slightly away from the collision point
+        Vector3 offset = collisionNormal * 3f + new Vector3(-1, 0, 0);
+        // Position to spawn the chip
+        Vector3 spawnPosition = collisionPoint + offset;
 
         // Blink the light multiple times to indicate processing
         Light processingLight = GetComponentInChildren<Light>();
@@ -33,9 +35,10 @@ public class ChipMachine : MonoBehaviour
             processingLight.enabled = false;
             yield return new WaitForSeconds(blinkDuration);
         }
+        // Wait for the conversion time
+        yield return new WaitForSeconds(conversionTime);
 
-        yield return new WaitForSeconds(conversionTime); // Wait for the conversion time
-
-        Instantiate(chip, spawnPosition, Quaternion.identity); // Create a new chip at the spawn position
+        // Create a new chip at the spawn position
+        Instantiate(chip, spawnPosition, Quaternion.identity); 
     }
 }
