@@ -102,10 +102,9 @@ public class ConveyorMover : MonoBehaviour
         }
     }
 
+    // Center the collided object on the conveyor
     private void OnCollisionEnter(Collision collision)
     {
-        // Center the collided object on the conveyor
-
         Vector3 conveyorCenter = transform.position;
         Vector3 objectBoundsCenter = collision.collider.bounds.center;
 
@@ -117,9 +116,9 @@ public class ConveyorMover : MonoBehaviour
 
     }
 
+    // Calculate the offset in the direction of the conveyor's movement
     private Vector3 CalculateCenteringOffset(Vector3 conveyorCenter, Vector3 objectBoundsCenter)
     {
-        // Calculate the offset in the direction of the conveyor's movement
         Vector3 conveyorDirection = transform.forward;
         Vector3 directionToCenter = conveyorCenter - objectBoundsCenter;
         float distanceAlongConveyor = Vector3.Dot(directionToCenter, conveyorDirection);

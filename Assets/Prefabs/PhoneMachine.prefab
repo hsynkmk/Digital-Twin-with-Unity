@@ -111,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 2910097898086036072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.59, y: 0.0001, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.393935, y: 0.393935, z: 0.393935}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6081697106690816723}
@@ -321,13 +321,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef795ad579a82d7448b8ec10f1a67a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phone: {fileID: 7184336676490770819, guid: ba8053b77ac77ed4894acf4e0ff4e165, type: 3}
-  phoneCountText:
-  - {fileID: 0}
-  conversionTime: 3
+  phonePrefab: {fileID: 7184336676490770819, guid: ba8053b77ac77ed4894acf4e0ff4e165, type: 3}
   requiredIron: 1
   requiredCopper: 1
   requiredChip: 1
+  blinkDuration: 0.2
+  blinkCount: 3
+  conversionTime: 3
 --- !u!65 &5220049917384443026
 BoxCollider:
   m_ObjectHideFlags: 0
