@@ -39,14 +39,24 @@ public class RobotMovement : MonoBehaviour
 
     private void HandlePickingUpProduct()
     {
-        Debug.Log("currentCount: " +currentCount + "targetCount: " +targetCount);
+        //Debug.Log("currentCount: " +currentCount + "targetCount: " +targetCount);
         if (currentCount < targetCount)
         {
-            agent.SetDestination(productsTransform.GetChild(0).position);
-
-            if (ReachedDestination())
+            if (productsTransform.childCount > 0)
             {
-                PickUpProduct();
+
+                agent.SetDestination(productsTransform.GetChild(0).position);
+
+                if (ReachedDestination())
+                {
+                    PickUpProduct();
+                }
+            }
+
+            else
+            {
+                // If there are no more products to pick up, set isIdle to true to start dropping.
+                isIdle = true;
             }
         }
     }
@@ -76,7 +86,7 @@ public class RobotMovement : MonoBehaviour
     {
         carriedProduct = productsTransform.GetChild(0);
         carriedProduct.SetParent(transform);
-        //targetCount--;
+        carriedProduct.localPosition = new Vector3(0, 1, 0.5f);
         isIdle = false;
     }
 
@@ -85,7 +95,8 @@ public class RobotMovement : MonoBehaviour
         if (carriedProduct != null)
         {
             carriedProduct.SetParent(targetPoints[currentCount]);
-            carriedProduct.localPosition = Vector3.zero;
+            carriedProduct.localPosition = new Vector3(0, carriedProduct.localScale.y / 2, 0);
+            carriedProduct.eulerAngles = Vector3.zero;
             carriedProduct = null;
         }
     }
