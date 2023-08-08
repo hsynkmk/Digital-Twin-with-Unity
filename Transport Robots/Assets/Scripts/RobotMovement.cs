@@ -7,6 +7,7 @@ public class RobotMovement : MonoBehaviour
 {
     [SerializeField] private Transform[] targetPoints;
     [SerializeField] private Transform productsTransform;
+    [SerializeField] private Animator animator;
 
     private int targetCount;
     private int currentCount;
@@ -22,6 +23,7 @@ public class RobotMovement : MonoBehaviour
 
     private void Update()
     {
+        
         if (isIdle && currentCount < targetCount)
         {
             HandlePickingUpProduct();
@@ -44,8 +46,9 @@ public class RobotMovement : MonoBehaviour
         {
             if (productsTransform.childCount > 0)
             {
-
+                animator.SetFloat("Speed", agent.velocity.magnitude);
                 agent.SetDestination(productsTransform.GetChild(0).position);
+                
 
                 if (ReachedDestination())
                 {
@@ -69,6 +72,7 @@ public class RobotMovement : MonoBehaviour
 
             if (ReachedDestination())
             {
+                animator.SetFloat("Speed", 0);
                 DropProduct();
 
                 currentCount++;
