@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
+using System;
 
 public class RobotMovement : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class RobotMovement : MonoBehaviour
     [SerializeField] private Transform productsTransform;
     [SerializeField] private Transform robotArea;
     [SerializeField] private Animator animator;
+    [SerializeField] private TextMeshProUGUI objectCountText;
 
     private int productCount;
     private int currentCount;
@@ -29,7 +30,10 @@ public class RobotMovement : MonoBehaviour
         for (int i = 0; i < targetPoints.Length; i++)
         {
             if (targetPoints[i].childCount > 0)
+            {
                 currentCount++;
+                objectCountText.text = "Delivered Objects: " + currentCount.ToString();
+            }
         }
 
         if (isIdle && currentCount < productCount)
@@ -46,16 +50,14 @@ public class RobotMovement : MonoBehaviour
             if (ReachedDestination())
             {
                 animator.SetFloat("Speed", 0);
-                agent.isStopped = true; // Hareketi durdur
+                agent.isStopped = true;
             }
             else
             {
-                //agent.isStopped = false; // Hareketi devam ettir
                 animator.SetFloat("Speed", agent.velocity.magnitude);
             }
         }
 
-        Debug.Log("currentCount: " + currentCount + "targetCount: " + productCount);
     }
 
 
@@ -101,12 +103,6 @@ public class RobotMovement : MonoBehaviour
             if (ReachedDestination())
             {
                 DropProduct();
-
-                //currentCount++;
-                //if (currentCount >= targetPoints.Length)
-                //{
-                //    currentCount = 0;
-                //}
 
                 isIdle = true;
             }
