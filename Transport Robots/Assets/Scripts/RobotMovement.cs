@@ -7,9 +7,10 @@ public class RobotMovement : MonoBehaviour
 {
     [SerializeField] private Transform[] targetPoints;
     [SerializeField] private Transform productsTransform;
+    [SerializeField] private Transform robotArea;
     [SerializeField] private Animator animator;
 
-    private int targetCount;
+    private int productCount;
     private int currentCount;
     private NavMeshAgent agent;
     private Transform carriedProduct;
@@ -18,42 +19,69 @@ public class RobotMovement : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        targetCount = productsTransform.childCount;
+        productCount = productsTransform.childCount;
     }
 
     private void Update()
     {
-        
-        if (isIdle && currentCount < targetCount)
+
+        currentCount = 0;
+        for (int i = 0; i < targetPoints.Length; i++)
+        {
+            if (targetPoints[i].childCount > 0)
+                currentCount++;
+        }
+
+        if (isIdle && currentCount < productCount)
         {
             HandlePickingUpProduct();
         }
-        else
+        else if (!isIdle)
         {
             HandleDroppingProduct();
         }
+        else if (productCount == currentCount)
+        {
+                agent.SetDestination(robotArea.position);
+            if (ReachedDestination())
+            {
+                animator.SetFloat("Speed", 0);
+                agent.isStopped = true; // Hareketi durdur
+            }
+            else
+            {
+                //agent.isStopped = false; // Hareketi devam ettir
+                animator.SetFloat("Speed", agent.velocity.magnitude);
+            }
+        }
+
+        Debug.Log("currentCount: " + currentCount + "targetCount: " + productCount);
     }
+
+
 
     private bool ReachedDestination()
     {
-        return !agent.pathPending && agent.remainingDistance < 0.1f;
+        return !agent.pathPending && agent.remainingDistance < 0.3f;
     }
 
     private void HandlePickingUpProduct()
     {
-        //Debug.Log("currentCount: " +currentCount + "targetCount: " +targetCount);
-        if (currentCount < targetCount)
+
+        if (currentCount < productCount)
         {
             if (productsTransform.childCount > 0)
             {
-                animator.SetFloat("Speed", agent.velocity.magnitude);
+
                 agent.SetDestination(productsTransform.GetChild(0).position);
-                
+
 
                 if (ReachedDestination())
                 {
+                    animator.SetFloat("Speed", 0);
                     PickUpProduct();
                 }
+                animator.SetFloat("Speed", agent.velocity.magnitude);
             }
 
             else
@@ -72,14 +100,13 @@ public class RobotMovement : MonoBehaviour
 
             if (ReachedDestination())
             {
-                animator.SetFloat("Speed", 0);
                 DropProduct();
 
-                currentCount++;
-                if (currentCount >= targetPoints.Length)
-                {
-                    currentCount = 0;
-                }
+                //currentCount++;
+                //if (currentCount >= targetPoints.Length)
+                //{
+                //    currentCount = 0;
+                //}
 
                 isIdle = true;
             }
@@ -88,6 +115,12 @@ public class RobotMovement : MonoBehaviour
 
     private void PickUpProduct()
     {
+
+        if (productsTransform.childCount < productCount)
+        {
+            //currentCount++;
+        }
+
         carriedProduct = productsTransform.GetChild(0);
         carriedProduct.SetParent(transform);
         carriedProduct.localPosition = new Vector3(0, 1, 0.5f);
