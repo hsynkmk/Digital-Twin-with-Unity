@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
-using System;
 
 public class RobotMovement : MonoBehaviour
 {
@@ -25,16 +24,7 @@ public class RobotMovement : MonoBehaviour
 
     private void Update()
     {
-
-        currentCount = 0;
-        for (int i = 0; i < targetPoints.Length; i++)
-        {
-            if (targetPoints[i].childCount > 0)
-            {
-                currentCount++;
-                objectCountText.text = "Delivered Objects: " + currentCount.ToString();
-            }
-        }
+        currentCount = CountObjectsAtTargetPoints();
 
         if (isIdle && currentCount < productCount)
         {
@@ -44,53 +34,44 @@ public class RobotMovement : MonoBehaviour
         {
             HandleDroppingProduct();
         }
-        else if (productCount == currentCount)
+        else if (currentCount == productCount)
         {
-                agent.SetDestination(robotArea.position);
-            if (ReachedDestination())
-            {
-                animator.SetFloat("Speed", 0);
-                agent.isStopped = true;
-            }
-            else
-            {
-                animator.SetFloat("Speed", agent.velocity.magnitude);
-            }
+            HandleReturningToRobotArea();
         }
-
     }
 
-
-
-    private bool ReachedDestination()
+    private int CountObjectsAtTargetPoints()
     {
-        return !agent.pathPending && agent.remainingDistance < 0.3f;
+        int count = 0;
+        for (int i = 0; i < targetPoints.Length; i++)
+        {
+            if (targetPoints[i].childCount > 0)
+            {
+                count++;
+                objectCountText.text = "Delivered Objects: " + count.ToString();
+            }
+        }
+        return count;
     }
 
     private void HandlePickingUpProduct()
     {
-
-        if (currentCount < productCount)
+        if (currentCount < productCount && productsTransform.childCount > 0)
         {
-            if (productsTransform.childCount > 0)
+            agent.SetDestination(productsTransform.GetChild(0).position);
+
+            if (ReachedDestination())
             {
-
-                agent.SetDestination(productsTransform.GetChild(0).position);
-
-
-                if (ReachedDestination())
-                {
-                    animator.SetFloat("Speed", 0);
-                    PickUpProduct();
-                }
-                animator.SetFloat("Speed", agent.velocity.magnitude);
+                animator.SetFloat("Speed", 0);
+                PickUpProduct();
             }
 
-            else
-            {
-                // If there are no more products to pick up, set isIdle to true to start dropping.
-                isIdle = true;
-            }
+            animator.SetFloat("Speed", agent.velocity.magnitude);
+
+        }
+        else
+        {
+            isIdle = true;
         }
     }
 
@@ -103,20 +84,33 @@ public class RobotMovement : MonoBehaviour
             if (ReachedDestination())
             {
                 DropProduct();
-
                 isIdle = true;
             }
         }
     }
 
+    private void HandleReturningToRobotArea()
+    {
+        agent.SetDestination(robotArea.position);
+
+        if (ReachedDestination())
+        {
+            animator.SetFloat("Speed", 0);
+            agent.isStopped = true;
+        }
+        else
+        {
+            animator.SetFloat("Speed", agent.velocity.magnitude);
+        }
+    }
+
+    private bool ReachedDestination()
+    {
+        return !agent.pathPending && agent.remainingDistance < 0.3f;
+    }
+
     private void PickUpProduct()
     {
-
-        if (productsTransform.childCount < productCount)
-        {
-            //currentCount++;
-        }
-
         carriedProduct = productsTransform.GetChild(0);
         carriedProduct.SetParent(transform);
         carriedProduct.localPosition = new Vector3(0, 1, 0.5f);
