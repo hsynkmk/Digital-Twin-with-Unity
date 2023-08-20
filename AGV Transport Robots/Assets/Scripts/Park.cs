@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,10 +21,10 @@ public static class Park
 
     public static Transform GetLocation()
     {
-        return parkTransform.GetChild(GetAvailableProduct());
+        return parkTransform.GetChild(GetAvailablePark());
     }
 
-    public static int GetAvailableProduct()
+    public static int GetAvailablePark()
     {
         int index = -1;
         for (int i = 0; i < parkCount; i++)
@@ -38,4 +39,5 @@ public static class Park
 
         return index;
     }
+
 }

@@ -10,14 +10,17 @@ public class Robot : MonoBehaviour
 
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
+        //agent = GetComponent<NavMeshAgent>();
     }
 
-
-    void Update()
+    public void StartTransport()
     {
-        agent.SetDestination(Product.GetLocation().position);
+        //agent.SetDestination(Product.GetLocation().position);
+        //isBusy = true;
     }
 
-
+    public bool IsBusy()
+    {
+        return isBusy;
+    }
 }
