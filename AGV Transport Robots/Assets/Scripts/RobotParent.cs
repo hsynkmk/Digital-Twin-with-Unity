@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using TMPro;
 
 public class RobotManager : MonoBehaviour
 {
@@ -14,10 +15,14 @@ public class RobotManager : MonoBehaviour
     }
 
     [SerializeField] private Button startButton;
+    [SerializeField] private TextMeshProUGUI infoText;
     private List<Transform> robotList = new List<Transform>();
     private List<RobotState> robotStates = new List<RobotState>();
     private int currentRobotIndex = 0;
     private int destIndex = 0;
+
+    private int deliveredObjects = 0; // Track the number of delivered objects
+    private int remainingObjects;
 
     private void Start()
     {
@@ -29,11 +34,39 @@ public class RobotManager : MonoBehaviour
             robotList.Add(child);
             robotStates.Add(RobotState.OnPark); // Initialize each robot's state
         }
+
+        remainingObjects = Product.productTransform.childCount; // Initialize remaining objects count
     }
 
     private void Update()
     {
-        for(int i = 0; i < robotStates.Count; i++)
+        int workingRobots = 0;
+        int fullParks = 0;
+
+        for (int i = 0; i < robotStates.Count; i++)
+        {
+            if (robotStates[i] == RobotState.OnPark)
+            {
+                currentRobotIndex = i;
+                fullParks++;
+            }
+            else if (robotStates[i] == RobotState.OnProduct || robotStates[i] == RobotState.OnDestination)
+            {
+                workingRobots++;
+            }
+        }
+
+        infoText.text = $"Working robots: {workingRobots}/ {transform.childCount}\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
+
+        for (int i = 0; i < robotStates.Count; i++)
+        {
+            if (robotStates[i] != RobotState.OnPark)
+            {
+                Park.MakeAvailable(i);
+            }
+        }
+
+        for (int i = 0; i < robotStates.Count; i++)
         {
             if (robotStates[i] == RobotState.OnPark)
             {
@@ -55,7 +88,6 @@ public class RobotManager : MonoBehaviour
                     {
 
                         Product.productTransform.GetChild(0).SetParent(robot.transform); // Set the robot as the parent of the product
-                        //carriedProduct.localPosition = new Vector3(0, 1, 0.5f);
                         MoveRobotToDestination(robot, agent);
                         robotStates[i] = RobotState.OnDestination; // Update state
                     }
@@ -90,13 +122,7 @@ public class RobotManager : MonoBehaviour
     {
         agent.SetDestination(Product.GetAvailableProduct().position);
         
-        for(int i = 0; i < robotStates.Count; i++)
-        {
-            if (robotStates[i] != RobotState.OnProduct)
-            {
-                Park.MakeAvailable(i);
-            }
-        }
+
 
     }
 
@@ -107,6 +133,8 @@ public class RobotManager : MonoBehaviour
 
     private void MoveRobotToPark(Transform robot, NavMeshAgent agent)
     {
+        remainingObjects--;
+        deliveredObjects++;
         agent.SetDestination(Park.GetLocation().position);
     }
 }

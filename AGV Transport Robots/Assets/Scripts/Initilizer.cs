@@ -8,7 +8,7 @@ public class Initilizer : MonoBehaviour
     [SerializeField] private Transform productTransform;
     [SerializeField] private Transform parkTransform;
 
-    void Start()
+    private void Awake()
     {
         Destination.destinationTransform = destinationTransform;
         Destination.MakeAllAvailable();
@@ -19,10 +19,4 @@ public class Initilizer : MonoBehaviour
         Park.parkTransform = parkTransform;
         Park.MakeAllUnavailable();
     }
-
-
-    //void Update()
-    //{
-
-    //}
 }
