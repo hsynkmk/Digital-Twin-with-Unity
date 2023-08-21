@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +6,7 @@ using TMPro;
 
 public class RobotManager : MonoBehaviour
 {
+    // Enum to represent the different states of the robot
     enum RobotState
     {
         OnPark,
@@ -16,38 +16,46 @@ public class RobotManager : MonoBehaviour
 
     [SerializeField] private Button startButton;
     [SerializeField] private TextMeshProUGUI infoText;
+
     private List<Transform> robotList = new List<Transform>();
     private List<RobotState> robotStates = new List<RobotState>();
+
     private int currentRobotIndex = 0;
     private int destIndex = 0;
-
-    private int deliveredObjects = 0; // Track the number of delivered objects
+    private int deliveredObjects = 0;
     private int remainingObjects;
 
     private void Start()
     {
-        Button btn = startButton.GetComponent<Button>();
-        btn.onClick.AddListener(StartNextRobot);
+        // Subscribe to the button's click event
+        startButton.onClick.AddListener(StartNextRobot);
 
-        foreach (Transform child in transform)
-        {
-            robotList.Add(child);
-            robotStates.Add(RobotState.OnPark); // Initialize each robot's state
-        }
-
-        remainingObjects = Product.productTransform.childCount; // Initialize remaining objects count
+        // Initialize robots and update remaining objects
+        InitializeRobots();
+        remainingObjects = Product.productTransform.childCount;
+        UpdateInfoText();
     }
 
     private void Update()
     {
+        // Update the information text on each frame
+        UpdateInfoText();
+
+        // Update robot states and move them
+        UpdateRobotStates();
+        MoveRobots();
+    }
+
+    private void UpdateInfoText()
+    {
         int workingRobots = 0;
         int fullParks = 0;
 
+        // Count the number of robots in different states
         for (int i = 0; i < robotStates.Count; i++)
         {
             if (robotStates[i] == RobotState.OnPark)
             {
-                currentRobotIndex = i;
                 fullParks++;
             }
             else if (robotStates[i] == RobotState.OnProduct || robotStates[i] == RobotState.OnDestination)
@@ -56,8 +64,23 @@ public class RobotManager : MonoBehaviour
             }
         }
 
-        infoText.text = $"Working robots: {workingRobots}/ {transform.childCount}\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
+        // Update the UI text to show relevant information
+        infoText.text = $"Working robots: {workingRobots}/{robotList.Count}\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
+    }
 
+    private void InitializeRobots()
+    {
+        // Initialize robot list and states based on the children of this transform
+        foreach (Transform child in transform)
+        {
+            robotList.Add(child);
+            robotStates.Add(RobotState.OnPark);
+        }
+    }
+
+    private void UpdateRobotStates()
+    {
+        // Release robots from parked state
         for (int i = 0; i < robotStates.Count; i++)
         {
             if (robotStates[i] != RobotState.OnPark)
@@ -66,6 +89,7 @@ public class RobotManager : MonoBehaviour
             }
         }
 
+        // Find the next available robot to start
         for (int i = 0; i < robotStates.Count; i++)
         {
             if (robotStates[i] == RobotState.OnPark)
@@ -74,7 +98,11 @@ public class RobotManager : MonoBehaviour
                 break;
             }
         }
+    }
 
+    private void MoveRobots()
+    {
+        // Move robots based on their states
         for (int i = 0; i < robotStates.Count; i++)
         {
             Transform robot = robotList[i];
@@ -86,20 +114,20 @@ public class RobotManager : MonoBehaviour
                 case RobotState.OnProduct:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
-
-                        Product.productTransform.GetChild(0).SetParent(robot.transform); // Set the robot as the parent of the product
+                        // Attach the product and move to the destination
+                        Product.productTransform.GetChild(0).SetParent(robot.transform);
                         MoveRobotToDestination(robot, agent);
-                        robotStates[i] = RobotState.OnDestination; // Update state
+                        robotStates[i] = RobotState.OnDestination;
                     }
                     break;
                 case RobotState.OnDestination:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
-
-                        robot.GetChild(1).SetParent(Destination.destinationTransform.GetChild(destIndex)); // Set the target point as the parent of the carried product
+                        // Attach the destination and move back to the park
+                        robot.GetChild(1).SetParent(Destination.destinationTransform.GetChild(destIndex));
                         destIndex++;
                         MoveRobotToPark(robot, agent);
-                        robotStates[i] = RobotState.OnPark; // Reset state for the next cycle
+                        robotStates[i] = RobotState.OnPark;
                     }
                     break;
             }
@@ -108,31 +136,31 @@ public class RobotManager : MonoBehaviour
 
     private void StartNextRobot()
     {
+        // Start the next robot if conditions are met
         if (robotStates[currentRobotIndex] == RobotState.OnPark && Product.IsAvailable())
         {
             Transform robot = robotList[currentRobotIndex];
             NavMeshAgent agent = robot.GetComponent<NavMeshAgent>();
             MoveRobotToProductLocation(robot, agent);
-            robotStates[currentRobotIndex] = RobotState.OnProduct; // Update state
+            robotStates[currentRobotIndex] = RobotState.OnProduct;
         }
     }
 
-    // Implement the methods to move the robot to the product and destination locations
     private void MoveRobotToProductLocation(Transform robot, NavMeshAgent agent)
     {
+        // Move the robot to the product location
         agent.SetDestination(Product.GetAvailableProduct().position);
-        
-
-
     }
 
     private void MoveRobotToDestination(Transform robot, NavMeshAgent agent)
     {
+        // Move the robot to the destination
         agent.SetDestination(Destination.GetLocation().position);
     }
 
     private void MoveRobotToPark(Transform robot, NavMeshAgent agent)
     {
+        // Update remaining and delivered objects, move robot to the park
         remainingObjects--;
         deliveredObjects++;
         agent.SetDestination(Park.GetLocation().position);
