@@ -6,16 +6,14 @@ using UnityEngine;
 public static class Park
 {
     public static Transform parkTransform;
-    public static int parkCount;
     private static List<bool> availabilityList;
 
-    public static void MakeAllAvailable()
+    public static void MakeAllUnavailable()
     {
-        parkCount = parkTransform.childCount;
         availabilityList = new List<bool>();
-        for (int i = 0; i < parkCount; i++)
+        for (int i = 0; i < parkTransform.childCount; i++)
         {
-            availabilityList.Add(true);
+            availabilityList.Add(false);
         }
     }
 
@@ -24,10 +22,15 @@ public static class Park
         return parkTransform.GetChild(GetAvailablePark());
     }
 
+    public static void MakeAvailable(int index)
+    {
+        availabilityList[index] = true;
+    }
+
     public static int GetAvailablePark()
     {
         int index = -1;
-        for (int i = 0; i < parkCount; i++)
+        for (int i = 0; i < parkTransform.childCount; i++)
         {
             if (availabilityList[i])
             {

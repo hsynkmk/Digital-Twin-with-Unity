@@ -5,40 +5,27 @@ using UnityEngine;
 public static class Product
 {
     public static Transform productTransform;
-    public static int productCount;
-    private static List<bool> availabilityList;
-    
+    private static Queue<Transform> availableProducts = new Queue<Transform>();
 
     public static void MakeAllAvailable()
     {
-        productCount = productTransform.childCount;
-        availabilityList = new List<bool>();
-        for (int i = 0; i < productCount; i++)
+        foreach (Transform child in productTransform)
         {
-            availabilityList.Add(true);
+            availableProducts.Enqueue(child);
         }
     }
 
-    public static Transform GetLocation()
+    public static Transform GetAvailableProduct()
     {
-        return productTransform.GetChild(GetAvailableProduct());
-    }
-
-    public static int GetAvailableProduct()
-    {
-        int index = -1;
-        for (int i = 0; i < productCount; i++)
+        if (availableProducts.Count > 0)
         {
-            if (availabilityList[i])
-            {
-                index = i;
-                availabilityList[i] = false;
-                break;
-            }
+            return availableProducts.Dequeue();
         }
-
-        return index;
+        return null;
     }
 
-
+    public static bool IsAvailable()
+    {
+        return availableProducts.Count > 0;
+    }
 }

@@ -17,7 +17,7 @@ public class Initilizer : MonoBehaviour
         Product.MakeAllAvailable();
 
         Park.parkTransform = parkTransform;
-        Park.MakeAllAvailable();
+        Park.MakeAllUnavailable();
     }
 
 

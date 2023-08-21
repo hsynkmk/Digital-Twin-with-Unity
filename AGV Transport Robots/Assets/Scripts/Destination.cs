@@ -5,14 +5,12 @@ using UnityEngine;
 public static class Destination
 {
     public static Transform destinationTransform;
-    public static int destinationCount;
     private static List<bool> availabilityList;
 
     public static void MakeAllAvailable()
     {
-        destinationCount = destinationTransform.childCount;
         availabilityList = new List<bool>();
-        for (int i = 0; i < destinationCount; i++)
+        for (int i = 0; i < destinationTransform.childCount; i++)
         {
             availabilityList.Add(true);
         }
@@ -24,10 +22,10 @@ public static class Destination
     }
 
 
-        public static int GetAvailableDestination()
+    public static int GetAvailableDestination()
     {
         int index = -1;
-        for (int i = 0; i < destinationCount; i++)
+        for (int i = 0; i < destinationTransform.childCount; i++)
         {
             if (availabilityList[i])
             {
