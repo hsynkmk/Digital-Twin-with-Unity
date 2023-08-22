@@ -281,7 +281,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6081697106690816723}
-  - component: {fileID: 3509853009349819755}
   - component: {fileID: 5220049917384443026}
   m_Layer: 0
   m_Name: PhoneMachine
@@ -309,25 +308,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3509853009349819755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7353094535894871579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef795ad579a82d7448b8ec10f1a67a52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  phonePrefab: {fileID: 7184336676490770819, guid: ba8053b77ac77ed4894acf4e0ff4e165, type: 3}
-  requiredIron: 1
-  requiredCopper: 1
-  requiredChip: 1
-  blinkDuration: 0.2
-  blinkCount: 3
-  conversionTime: 3
 --- !u!65 &5220049917384443026
 BoxCollider:
   m_ObjectHideFlags: 0
