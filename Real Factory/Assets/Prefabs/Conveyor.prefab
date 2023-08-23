@@ -117,8 +117,8 @@ GameObject:
   - component: {fileID: 5043339179970541312}
   - component: {fileID: 1341976778803473666}
   - component: {fileID: 6622678452483388627}
-  - component: {fileID: 5224257597434223405}
   - component: {fileID: 8240896687345290791}
+  - component: {fileID: 2061882297162204271}
   m_Layer: 0
   m_Name: Bottom Belt
   m_TagString: Untagged
@@ -212,7 +212,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &5224257597434223405
+--- !u!114 &8240896687345290791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772099210340041870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bbc817517c1b8a4b810c1eb0b265780, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+--- !u!54 &2061882297162204271
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,19 +252,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8240896687345290791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 772099210340041870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed65edd9076be24ea0bd46a1e7bdcfd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
 --- !u!1 &1506566859724584773
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1506566859724584773}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed65edd9076be24ea0bd46a1e7bdcfd, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bbc817517c1b8a4b810c1eb0b265780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
@@ -652,7 +652,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2763449290255542804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a20de2359321fb45b75e63deabff5e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c7d63a8d81190141abfe66767ef2d7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   topBelt: {fileID: 1506566859724584773}
@@ -1052,7 +1052,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5628398863610257891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a20de2359321fb45b75e63deabff5e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c7d63a8d81190141abfe66767ef2d7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   topBelt: {fileID: 1506566859724584773}

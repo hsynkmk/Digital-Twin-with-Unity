@@ -11,7 +11,7 @@ public class PhoneMachine : MonoBehaviour
     [SerializeField] private float blinkDuration = 0.2f; // Duration for each light blink
     [SerializeField] private int blinkCount = 3; // Number of times to blink the light
     [SerializeField] private float conversionTime = 2f; // Duration of the conversion process
-    private TextMeshProUGUI phoneCountText;
+    //private TextMeshProUGUI phoneCountText;
     private int ironCount = 0;
     private int copperCount = 0;
     private int chipCount = 0;
@@ -19,7 +19,7 @@ public class PhoneMachine : MonoBehaviour
     private void Start()
     {
         // Get reference to the TextMeshProUGUI component for phone count display
-        phoneCountText = GameObject.FindGameObjectWithTag("Phone Count").GetComponent<TextMeshProUGUI>();
+        //phoneCountText = GameObject.FindGameObjectWithTag("Phone Count").GetComponent<TextMeshProUGUI>();
     }
 
     private void OnCollisionEnter(Collision other)
@@ -101,9 +101,9 @@ public class PhoneMachine : MonoBehaviour
 
         // Instantiate a new phone at the spawn position and increase the phone count
         Instantiate(phonePrefab, spawnPosition, Quaternion.identity);
-        int phoneCount = int.Parse(phoneCountText.text);
-        phoneCount++;
-        phoneCountText.text = phoneCount.ToString();
+        //int phoneCount = int.Parse(phoneCountText.text);
+        //phoneCount++;
+        //phoneCountText.text = phoneCount.ToString();
 
         DecrementResourceCount(); // Decrease the resource counts after producing a phone
     }

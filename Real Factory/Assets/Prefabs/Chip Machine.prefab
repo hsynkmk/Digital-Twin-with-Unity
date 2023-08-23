@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8065634398942408459}
   - component: {fileID: 6763268884141926791}
+  - component: {fileID: 2994536687931653292}
   m_Layer: 0
   m_Name: Chip Machine
   m_TagString: Untagged
@@ -55,6 +56,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.0889807, y: 3.5328164, z: 1.7596358}
   m_Center: {x: 0.06619239, y: 1.2664084, z: -0.07626015}
+--- !u!114 &2994536687931653292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2332076438274365508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a0e79d7aceb8f40a7bd16e71d5211f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  silicon: {fileID: 4994673331231885129, guid: b22c02fd89821cc4c9a39d7cb4b865b1, type: 3}
+  chip: {fileID: 6723821890533600777, guid: 000832b4e6f06d64e8ddf3d0be6b38db, type: 3}
+  blinkDuration: 0.2
+  blinkCount: 3
+  conversionTime: 2
 --- !u!1 &3882543244991469947
 GameObject:
   m_ObjectHideFlags: 0

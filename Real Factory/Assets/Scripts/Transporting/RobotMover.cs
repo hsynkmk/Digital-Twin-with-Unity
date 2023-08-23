@@ -15,8 +15,8 @@ public class RobotManager : MonoBehaviour
         OnDestination,
     }
 
-    [SerializeField] private Button startButton;
-    [SerializeField] private TextMeshProUGUI infoText;
+
+    //[SerializeField] private TextMeshProUGUI infoText;
 
     private List<Transform> robotList = new List<Transform>();
     private List<RobotState> robotStates = new List<RobotState>();
@@ -26,19 +26,23 @@ public class RobotManager : MonoBehaviour
     private int deliveredObjects = 0;
     private int remainingObjects;
 
+
     private void Start()
     {
         // Subscribe to the button's click event
-        startButton.onClick.AddListener(StartNextRobot);
 
         // Initialize robots and update remaining objects
         InitializeRobots();
         remainingObjects = Objects.productTransform.childCount;
         UpdateInfoText();
+        
     }
 
     private void Update()
     {
+        if(Objects.IsAvailable())
+            StartNextRobot();
+
         // Update the information text on each frame
         UpdateInfoText();
 
@@ -66,7 +70,7 @@ public class RobotManager : MonoBehaviour
         }
 
         // Update the UI text to show relevant information
-        infoText.text = $"Working robots: {workingRobots}/{robotList.Count}\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
+        //infoText.text = $"Working robots: {workingRobots}/{robotList.Count}\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
     }
 
     private void InitializeRobots()
@@ -115,8 +119,8 @@ public class RobotManager : MonoBehaviour
                 case RobotState.OnProduct:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
-                        // Attach the product and move to the destination
                         Objects.productTransform.GetChild(0).SetParent(robot.transform);
+                        robot.transform.GetChild(1).localPosition = new Vector3(0, 0.2f, 0);
                         MoveRobotToDestination(robot, agent);
                         robotStates[i] = RobotState.OnDestination;
                     }
