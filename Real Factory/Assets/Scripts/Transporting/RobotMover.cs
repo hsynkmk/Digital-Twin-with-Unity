@@ -17,12 +17,18 @@ public class RobotManager : MonoBehaviour
 
 
     //[SerializeField] private TextMeshProUGUI infoText;
+    [SerializeField] Transform mineDelivery;
+    [SerializeField] Transform siliconDelivery;
+    [SerializeField] Transform phoneDelivery;
+
+    GameObject SiliconPlace;
+    GameObject MineralPlace;
+    GameObject TruckPlace;
 
     private List<Transform> robotList = new List<Transform>();
     private List<RobotState> robotStates = new List<RobotState>();
 
     private int currentRobotIndex = 0;
-    private int destIndex = 0;
     private int deliveredObjects = 0;
     private int remainingObjects;
 
@@ -30,21 +36,25 @@ public class RobotManager : MonoBehaviour
     private void Start()
     {
         // Subscribe to the button's click event
+        SiliconPlace = GameObject.FindGameObjectWithTag("Silicon Place");
+        MineralPlace = GameObject.FindGameObjectWithTag("Mineral Place");
+        TruckPlace = GameObject.FindGameObjectWithTag("Truck Place");
+
 
         // Initialize robots and update remaining objects
         InitializeRobots();
         remainingObjects = Objects.productTransform.childCount;
         UpdateInfoText();
-        
+
     }
 
     private void Update()
     {
-        if(Objects.IsAvailable())
+        if (Objects.IsAvailable())
             StartNextRobot();
 
         // Update the information text on each frame
-        UpdateInfoText();
+        //UpdateInfoText();
 
         // Update robot states and move them
         UpdateRobotStates();
@@ -121,16 +131,37 @@ public class RobotManager : MonoBehaviour
                     {
                         Objects.productTransform.GetChild(0).SetParent(robot.transform);
                         robot.transform.GetChild(1).localPosition = new Vector3(0, 0.2f, 0);
-                        MoveRobotToDestination(robot, agent);
-                        robotStates[i] = RobotState.OnDestination;
+                        string objectTag = robot.transform.GetChild(1).gameObject.tag;
+
+
+                        if (objectTag == "Silicon")
+                        {
+                            MoveRobotToSiliconDelivery(robot, agent);
+                            robotStates[i] = RobotState.OnDestination;
+                        }
+                        else if(objectTag == "Iron Mine" || objectTag == "Cooper Mine")
+                        {
+                            MoveRobotToMineDelivery(robot, agent);
+                            robotStates[i] = RobotState.OnDestination;
+                        }
+                        else if(robot.transform.GetChild(1).gameObject.tag=="Phone")
+                        {
+                            MoveRobotToPhoneDelivery(robot, agent);
+                            robotStates[i] = RobotState.OnDestination;
+                        }
+                        else
+                        {
+                            MoveRobotToPark(robot, agent);
+                            robotStates[i] = RobotState.OnPark;
+                        }
                     }
                     break;
+
                 case RobotState.OnDestination:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
                         // Attach the destination and move back to the park
-                        robot.GetChild(1).SetParent(Destination.destinationTransform.GetChild(destIndex));
-                        destIndex++;
+                        robot.GetChild(1).parent = null;
                         MoveRobotToPark(robot, agent);
                         robotStates[i] = RobotState.OnPark;
                     }
@@ -157,10 +188,22 @@ public class RobotManager : MonoBehaviour
         agent.SetDestination(Objects.GetAvailableProduct().position);
     }
 
-    private void MoveRobotToDestination(Transform robot, NavMeshAgent agent)
+    private void MoveRobotToMineDelivery(Transform robot, NavMeshAgent agent)
     {
         // Move the robot to the destination
-        agent.SetDestination(Destination.GetLocation().position);
+        agent.SetDestination(mineDelivery.position);
+    }
+
+    private void MoveRobotToSiliconDelivery(Transform robot, NavMeshAgent agent)
+    {
+        // Move the robot to the destination
+        agent.SetDestination(siliconDelivery.position);
+    }
+
+    private void MoveRobotToPhoneDelivery(Transform robot, NavMeshAgent agent)
+    {
+        // Move the robot to the destination
+        agent.SetDestination(phoneDelivery.position);
     }
 
     private void MoveRobotToPark(Transform robot, NavMeshAgent agent)

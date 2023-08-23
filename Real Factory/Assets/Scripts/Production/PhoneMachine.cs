@@ -32,7 +32,7 @@ public class PhoneMachine : MonoBehaviour
 
             if (HasEnoughResources())
             {
-                StartCoroutine(ProducePhone(other.contacts[0].point, other.contacts[0].normal));
+                StartCoroutine(ProducePhone());
             }
         }
         else
@@ -79,11 +79,9 @@ public class PhoneMachine : MonoBehaviour
         return ironCount >= requiredIron && copperCount >= requiredCopper && chipCount >= requiredChip;
     }
 
-    private IEnumerator ProducePhone(Vector3 collisionPoint, Vector3 collisionNormal)
+    private IEnumerator ProducePhone()
     {
-        // Calculate the spawn position for the phone based on the collision point and normal
-        Vector3 offset = collisionNormal * 3f;
-        Vector3 spawnPosition = collisionPoint + offset;
+        Vector3 spawnPosition = transform.localPosition + Vector3.right + Vector3.up;
 
         // Get the processing light component
         Light processingLight = GetComponentInChildren<Light>();

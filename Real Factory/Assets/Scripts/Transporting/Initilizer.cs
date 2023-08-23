@@ -9,9 +9,6 @@ public class Initilizer : MonoBehaviour
 
     private void Awake()
     {
-        Destination.destinationTransform = destinationTransform;
-        Destination.MakeAllAvailable();
-
         Objects.productTransform = productTransform;
         Objects.MakeAllAvailable();
 

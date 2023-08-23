@@ -3,7 +3,22 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Cooper Mine
+  - Iron Mine
+  - INOTA
+  - robot
+  - InotaBody
+  - Conveyor
+  - Refined Copper
+  - Refined Iron
+  - Mineral Machine
+  - Silicon
+  - Chip
+  - Phone
+  - Silicon Place
+  - Mineral Place
+  - Truck Place
   layers:
   - Default
   - TransparentFX
