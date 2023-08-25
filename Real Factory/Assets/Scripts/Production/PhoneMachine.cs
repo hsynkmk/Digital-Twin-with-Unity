@@ -5,6 +5,7 @@ using UnityEngine;
 public class PhoneMachine : MonoBehaviour
 {
     [SerializeField] private GameObject phonePrefab;
+    [SerializeField] private Transform objectProduct;
     [SerializeField] private int requiredIron = 1;
     [SerializeField] private int requiredCopper = 1;
     [SerializeField] private int requiredChip = 1;
@@ -81,7 +82,9 @@ public class PhoneMachine : MonoBehaviour
 
     private IEnumerator ProducePhone()
     {
-        Vector3 spawnPosition = transform.localPosition + Vector3.right + Vector3.up;
+        // Spawn position for the phone
+        Vector3 spawnPosition = transform.position + new Vector3(0, 2, 3);
+        //Vector3 spawnPosition = new Vector3(10, 2, -15);
 
         // Get the processing light component
         Light processingLight = GetComponentInChildren<Light>();
@@ -98,7 +101,12 @@ public class PhoneMachine : MonoBehaviour
         yield return new WaitForSeconds(conversionTime); // Wait for the conversion process
 
         // Instantiate a new phone at the spawn position and increase the phone count
-        Instantiate(phonePrefab, spawnPosition, Quaternion.identity);
+        GameObject newPhone = Instantiate(phonePrefab, spawnPosition, Quaternion.identity);
+
+        newPhone.transform.SetParent(objectProduct);
+
+        //Debug.Log(Objects.availableProducts.Count);
+
         //int phoneCount = int.Parse(phoneCountText.text);
         //phoneCount++;
         //phoneCountText.text = phoneCount.ToString();

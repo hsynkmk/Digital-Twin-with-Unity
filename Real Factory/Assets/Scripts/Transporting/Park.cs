@@ -20,9 +20,19 @@ public static class Park
         return parkTransform.GetChild(GetAvailablePark());
     }
 
+    public static Transform GetIndex(int index)
+    {
+        return parkTransform.GetChild(index);
+    }
+
     public static void MakeAvailable(int index)
     {
         availabilityList[index] = true;
+    }
+
+    public static void MakeUnAvailable(int index)
+    {
+        availabilityList[index] = false;
     }
 
     public static int GetAvailablePark()
@@ -37,8 +47,6 @@ public static class Park
                 break;
             }
         }
-
         return index;
     }
-
 }
