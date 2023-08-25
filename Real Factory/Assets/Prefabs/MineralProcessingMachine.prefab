@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8261893133573850906}
   - component: {fileID: 8962485293417469330}
+  - component: {fileID: 7737425961818979586}
   m_Layer: 0
   m_Name: MineralProcessingMachine
   m_TagString: Untagged
@@ -55,6 +56,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.6703959, y: 4.4813385, z: 1.438657}
   m_Center: {x: -0.25013018, y: 1.7406693, z: 0.009678483}
+--- !u!114 &7737425961818979586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2682932335047587024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c9215ab0472294ca04edb828c08077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mineralsToProcess:
+  - {fileID: 3317808742607447534, guid: 2217ae76e42343c4ab563f47a5a69c91, type: 3}
+  - {fileID: 3168806528722713109, guid: 32260081798400f4486aa9cf1775ceb9, type: 3}
+  refinedObjects:
+  - {fileID: 702917671137361029, guid: b7ebaffee6735f44c98fd113dbb426d7, type: 3}
+  - {fileID: 8678765234311239088, guid: fe8467d54b3fca844bae2f5dcd4108ca, type: 3}
+  blinkDuration: 0.2
+  blinkCount: 3
+  conversionTime: 2
 --- !u!1 &5298162257675464412
 GameObject:
   m_ObjectHideFlags: 0
