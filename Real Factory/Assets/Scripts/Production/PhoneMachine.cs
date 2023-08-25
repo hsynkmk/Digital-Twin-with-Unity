@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PhoneMachine : MonoBehaviour
@@ -39,7 +40,7 @@ public class PhoneMachine : MonoBehaviour
         else
         {
             // Destroy any other objects that collide with the machine
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
         }
     }
 
@@ -104,6 +105,7 @@ public class PhoneMachine : MonoBehaviour
         GameObject newPhone = Instantiate(phonePrefab, spawnPosition, Quaternion.identity);
 
         newPhone.transform.SetParent(objectProduct);
+        Objects.availableResources.Enqueue(newPhone.transform);
 
         //Debug.Log(Objects.availableProducts.Count);
 

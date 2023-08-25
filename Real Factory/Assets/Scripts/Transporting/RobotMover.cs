@@ -34,7 +34,7 @@ public class RobotManager : MonoBehaviour
     private int remainingObjects;
 
 
-    private void Start()
+    private void Awake()
     {
         // Subscribe to the button's click event
         SiliconPlace = GameObject.FindGameObjectWithTag("Silicon Place");
@@ -137,7 +137,9 @@ public class RobotManager : MonoBehaviour
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
                         Debug.Log("ic: " + Objects.resourceTransform.childCount);
-
+                        Debug.Log("ic trnsfrm: " + robotTarget[i]);
+                        Debug.Log("ic index: " + i);
+                        Debug.Log("ic State: " + robotStates[i]);
                         robotTarget[i].SetParent(robot.transform);
                         //Objects.resourceTransform.GetChild(0).SetParent(robot.transform);
                         robot.transform.GetChild(1).localPosition = new Vector3(0, 0.2f, 0);
@@ -156,6 +158,7 @@ public class RobotManager : MonoBehaviour
                         }
                         else if(objectTag == "Phone")
                         {
+                            Debug.Log("-----------Inside Phone Tag---------------------------");
                             MoveRobotToPhoneDelivery(robot, agent);
                             robotStates[i] = RobotState.OnDestination;
                         }
@@ -191,6 +194,12 @@ public class RobotManager : MonoBehaviour
     {
         // Move the robot to the product location
         robotTarget[currentRobotIndex] = Objects.GetAvailableProduct();
+
+        for(int i = 0; i < robotTarget.Count; i++)
+        {
+            Debug.Log(robotTarget[i]);
+        }
+        
         agent.SetDestination(robotTarget[currentRobotIndex].position);
     }
 

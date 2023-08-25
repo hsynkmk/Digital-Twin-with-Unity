@@ -24,20 +24,7 @@ public static class Objects
         return null;
     }
 
-    public static void CheckProduct()
-    {
-        if (resourceTransform.childCount > 0)
-        {
-            foreach (Transform child in resourceTransform)
-            {
-                if (!availableResources.Contains(child))
-                {
-                    availableResources.Enqueue(child);
-                }
-            }
-        }
 
-    }
 
     public static bool IsAvailable()
     {
