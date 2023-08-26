@@ -19,6 +19,7 @@ TagManager:
   - Silicon Place
   - Mineral Place
   - Truck Place
+  - Ground
   layers:
   - Default
   - TransparentFX

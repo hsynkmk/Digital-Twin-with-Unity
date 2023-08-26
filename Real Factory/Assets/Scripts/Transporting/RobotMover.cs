@@ -64,7 +64,6 @@ public class RobotManager : MonoBehaviour
     
     private void UpdateInfoText()
     {
-        int workingRobots = 0;
         int fullParks = 0;
         string text = "";
 
@@ -74,10 +73,6 @@ public class RobotManager : MonoBehaviour
             if (robotStates[i] == RobotState.OnPark)
             {
                 fullParks++;
-            }
-            else if (robotStates[i] == RobotState.OnResource || robotStates[i] == RobotState.OnDelivery)
-            {
-                workingRobots++;
             }
         }
 

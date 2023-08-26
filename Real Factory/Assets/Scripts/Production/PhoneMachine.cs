@@ -5,7 +5,7 @@ using UnityEngine;
 public class PhoneMachine : MonoBehaviour
 {
     [SerializeField] private GameObject phonePrefab;
-    [SerializeField] private Transform objectProduct;
+    [SerializeField] private Transform resourceObject;
     [SerializeField] private int requiredIron = 1;
     [SerializeField] private int requiredCopper = 1;
     [SerializeField] private int requiredChip = 1;
@@ -97,7 +97,7 @@ public class PhoneMachine : MonoBehaviour
         // Instantiate a new phone at the spawn position and increase the phone count
         GameObject newPhone = Instantiate(phonePrefab, spawnPosition, Quaternion.identity);
 
-        newPhone.transform.SetParent(objectProduct);
+        newPhone.transform.SetParent(resourceObject);
         Objects.availableResources.Enqueue(newPhone.transform);
 
         //Debug.Log(Objects.availableProducts.Count);
