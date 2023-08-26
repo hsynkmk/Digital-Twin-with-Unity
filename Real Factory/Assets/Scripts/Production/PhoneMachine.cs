@@ -13,14 +13,16 @@ public class PhoneMachine : MonoBehaviour
     [SerializeField] private int blinkCount = 3; // Number of times to blink the light
     [SerializeField] private float conversionTime = 2f; // Duration of the conversion process
     [SerializeField] TextMeshProUGUI phoneCountText;
+    [SerializeField] TextMeshPro objectCountText;
     private int ironCount = 0;
     private int copperCount = 0;
     private int chipCount = 0;
 
-    private void Start()
+    private void Update()
     {
-        // Get reference to the TextMeshProUGUI component for phone count display
+        objectCountText.text = $"Refined Iron: {ironCount}\nRefined Copper: {copperCount}\nChip: {chipCount}";
     }
+
 
     private void OnCollisionEnter(Collision other)
     {
@@ -71,7 +73,7 @@ public class PhoneMachine : MonoBehaviour
     private bool HasEnoughResources()
     {
         // Check if there are enough resources to produce a phone based on the required amounts
-        return ironCount >= requiredIron && copperCount >= requiredCopper && chipCount >= requiredChip;
+        return ((ironCount >= requiredIron) && (copperCount >= requiredCopper) && (chipCount >= requiredChip));
     }
 
     private IEnumerator ProducePhone()
@@ -99,8 +101,6 @@ public class PhoneMachine : MonoBehaviour
 
         newPhone.transform.SetParent(resourceObject);
         Objects.availableResources.Enqueue(newPhone.transform);
-
-        //Debug.Log(Objects.availableProducts.Count);
 
         int phoneCount = int.Parse(phoneCountText.text);
         phoneCount++;

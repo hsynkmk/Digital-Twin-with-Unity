@@ -661,7 +661,7 @@ MonoBehaviour:
   - {fileID: 3317808742607447534, guid: 2217ae76e42343c4ab563f47a5a69c91, type: 3}
   - {fileID: 3168806528722713109, guid: 32260081798400f4486aa9cf1775ceb9, type: 3}
   - {fileID: 4994673331231885129, guid: b22c02fd89821cc4c9a39d7cb4b865b1, type: 3}
-  resourceObject: {fileID: 0}
+  resourceObject: {fileID: 1863736434}
 --- !u!114 &246962753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1281,14 +1281,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chip Machine
       objectReference: {fileID: 0}
-    - target: {fileID: 2332076438274365508, guid: dbc50adad3ddcbf48a4dde6f8487281d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 3882543244991469947, guid: dbc50adad3ddcbf48a4dde6f8487281d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
     - target: {fileID: 8065634398942408459, guid: dbc50adad3ddcbf48a4dde6f8487281d, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -1332,10 +1324,6 @@ PrefabInstance:
     - target: {fileID: 8065634398942408459, guid: dbc50adad3ddcbf48a4dde6f8487281d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8535871282790232661, guid: dbc50adad3ddcbf48a4dde6f8487281d, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2633,7 +2621,7 @@ MonoBehaviour:
   - {fileID: 3317808742607447534, guid: 2217ae76e42343c4ab563f47a5a69c91, type: 3}
   - {fileID: 3168806528722713109, guid: 32260081798400f4486aa9cf1775ceb9, type: 3}
   - {fileID: 4994673331231885129, guid: b22c02fd89821cc4c9a39d7cb4b865b1, type: 3}
-  resourceObject: {fileID: 0}
+  resourceObject: {fileID: 1863736434}
 --- !u!1 &1052863997
 GameObject:
   m_ObjectHideFlags: 0
@@ -3522,10 +3510,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 1946188530}
     m_Modifications:
     - target: {fileID: 1152423400012250251, guid: d7e73d3dfbc26054dad293fef2e6c80d, type: 3}
-      propertyPath: objectProduct
-      value: 
-      objectReference: {fileID: 1863736434}
-    - target: {fileID: 1152423400012250251, guid: d7e73d3dfbc26054dad293fef2e6c80d, type: 3}
       propertyPath: phoneCountText
       value: 
       objectReference: {fileID: 172480924}
@@ -3580,7 +3564,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5483917361026184941, guid: d7e73d3dfbc26054dad293fef2e6c80d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: d7e73d3dfbc26054dad293fef2e6c80d, type: 3}
 --- !u!4 &1858264483 stripped
 Transform:
@@ -3815,7 +3802,13 @@ PrefabInstance:
       value: Objects
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2318640589675381155, guid: 3b5b805a98a205d42b9be782074b5e0a, type: 3}
+    - {fileID: 6276788164055443320, guid: 3b5b805a98a205d42b9be782074b5e0a, type: 3}
+    - {fileID: 7692474136382378394, guid: 3b5b805a98a205d42b9be782074b5e0a, type: 3}
+    - {fileID: 3705905666207224780, guid: 3b5b805a98a205d42b9be782074b5e0a, type: 3}
+    - {fileID: 4933553116738840480, guid: 3b5b805a98a205d42b9be782074b5e0a, type: 3}
+    - {fileID: 1464851813051098991, guid: 3b5b805a98a205d42b9be782074b5e0a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b5b805a98a205d42b9be782074b5e0a, type: 3}
