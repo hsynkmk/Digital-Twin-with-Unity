@@ -44,7 +44,7 @@ public class RobotManager : MonoBehaviour
 
         // Initialize robots and update remaining objects
         InitializeRobots();
-        remainingObjects = Objects.resourceTransform.childCount;
+        
         //UpdateInfoText();
 
     }
@@ -54,6 +54,7 @@ public class RobotManager : MonoBehaviour
         if (Objects.IsAvailable())
             StartNextRobot();
 
+        remainingObjects = Objects.resourceTransform.childCount;
         // Update the information text on each frame
         UpdateInfoText();
 
@@ -78,7 +79,7 @@ public class RobotManager : MonoBehaviour
 
         for(int i = 0; i<robotList.Count; i++)
         {
-            text += "Robot " + i + 1 + ": " + robotStates[i].ToString() + "\r\n";
+            text += "Robot " + (i + 1) + ": " + robotStates[i].ToString() + "\r\n";
         }
 
         infoText.text = text;
