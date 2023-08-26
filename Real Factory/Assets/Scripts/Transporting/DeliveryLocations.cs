@@ -6,8 +6,7 @@ public class DeliveryLocations : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        //collision.transform.parent = transform;
-
+        // Raise the object on the conveyor
         collision.transform.localPosition += new Vector3(1.5f, 2, 0);
     }
 }

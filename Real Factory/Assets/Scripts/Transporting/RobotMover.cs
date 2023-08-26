@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.AI;
 using TMPro;
-using Unity.VisualScripting;
 
 public class RobotManager : MonoBehaviour
 {
@@ -15,11 +13,12 @@ public class RobotManager : MonoBehaviour
         OnDelivery,
     }
 
-
     [SerializeField] private TextMeshProUGUI infoText;
-    [SerializeField] Transform mineDelivery;
-    [SerializeField] Transform siliconDelivery;
-    [SerializeField] Transform phoneDelivery;
+    [SerializeField] private Transform mineDelivery;
+    [SerializeField] private Transform siliconDelivery;
+    [SerializeField] private Transform phoneDelivery;
+    [SerializeField] private Transform productTransform;
+    [SerializeField] private Transform parkTransform;
 
     private GameObject SiliconPlace;
     private GameObject MineralPlace;
@@ -33,6 +32,14 @@ public class RobotManager : MonoBehaviour
     private int deliveredObjects = 0;
     private int remainingObjects;
 
+    private void Awake()
+    {
+        Objects.resourceTransform = productTransform;
+        Objects.MakeAllAvailable();
+
+        Park.parkTransform = parkTransform;
+        Park.Initialize();
+    }
 
     private void Start()
     {
@@ -116,7 +123,7 @@ public class RobotManager : MonoBehaviour
         {
             if (robotStates[i] == RobotState.OnPark)
             {
-                Park.MakeUnAvailable(i);
+                Park.MakeUnavailable(i);
                 currentRobotIndex = i;
                 break;
             }
