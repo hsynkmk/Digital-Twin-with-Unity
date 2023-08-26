@@ -661,7 +661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phonePrefab: {fileID: 7184336676490770819, guid: ba8053b77ac77ed4894acf4e0ff4e165, type: 3}
-  objectProduct: {fileID: 0}
+  objectProduct: {fileID: 2254605421155588024, guid: 3b5b805a98a205d42b9be782074b5e0a, type: 3}
   requiredIron: 1
   requiredCopper: 1
   requiredChip: 1
