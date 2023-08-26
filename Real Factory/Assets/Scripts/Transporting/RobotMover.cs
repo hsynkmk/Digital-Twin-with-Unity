@@ -83,7 +83,7 @@ public class RobotManager : MonoBehaviour
 
         for(int i = 0; i<robotList.Count; i++)
         {
-            text += "Robot " + i + ": " + robotStates[i].ToString() + "\r\n";
+            text += "Robot " + i + 1 + ": " + robotStates[i].ToString() + "\r\n";
         }
 
         infoText.text = text;
