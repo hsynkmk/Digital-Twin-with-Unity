@@ -20,20 +20,16 @@ public class RobotManager : MonoBehaviour
     [SerializeField] private Transform productTransform;
     [SerializeField] private Transform parkTransform;
 
-    private GameObject SiliconPlace;
-    private GameObject MineralPlace;
-    private GameObject TruckPlace;
-
     private List<Transform> robotList = new List<Transform>();
     private List<Transform> robotTarget = new List<Transform>();
     private List<RobotState> robotStates = new List<RobotState>();
 
-    private int currentRobotIndex = 0;
-    private int deliveredObjects = 0;
+    private int currentRobotIndex;
+    private int deliveredObjects;
     private int remainingObjects;
 
     private void Awake()
-    {
+    {   // Initialize the resource manager and park
         ResourceManager.resourceTransform = productTransform;
         ResourceManager.InitializeAvailableResources();
 
@@ -43,25 +39,16 @@ public class RobotManager : MonoBehaviour
 
     private void Start()
     {
-        // Subscribe to the button's click event
-        SiliconPlace = GameObject.FindGameObjectWithTag("Silicon Place");
-        MineralPlace = GameObject.FindGameObjectWithTag("Mineral Place");
-        TruckPlace = GameObject.FindGameObjectWithTag("Truck Place");
-
-
         // Initialize robots and update remaining objects
         InitializeRobots();
-        
-        //UpdateInfoText();
-
     }
 
     private void Update()
     {
+        // Start the next robot if there are available resources
         if (ResourceManager.HasAvailableResources())
             StartNextRobot();
 
-        remainingObjects = ResourceManager.resourceTransform.childCount;
         // Update the information text on each frame
         UpdateInfoText();
 
@@ -69,9 +56,11 @@ public class RobotManager : MonoBehaviour
         UpdateParkStates();
         MoveRobots();
     }
-    
+
     private void UpdateInfoText()
     {
+        // Update the information text
+        remainingObjects = ResourceManager.resourceTransform.childCount;
         int fullParks = 0;
         string text = "";
 
@@ -84,7 +73,7 @@ public class RobotManager : MonoBehaviour
             }
         }
 
-        for(int i = 0; i<robotList.Count; i++)
+        for (int i = 0; i < robotList.Count; i++)
         {
             text += "Robot " + (i + 1) + ": " + robotStates[i].ToString() + "\r\n";
         }
@@ -94,8 +83,8 @@ public class RobotManager : MonoBehaviour
         // Update the UI text to show relevant information
         infoText.text += $"\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
     }
-    
-    
+
+
     private void InitializeRobots()
     {
         // Initialize robot list and states based on the children of this transform
@@ -132,7 +121,6 @@ public class RobotManager : MonoBehaviour
 
     private void MoveRobots()
     {
-
         // Move robots based on their states
         for (int i = 0; i < robotStates.Count; i++)
         {
@@ -142,32 +130,35 @@ public class RobotManager : MonoBehaviour
 
             switch (currentState)
             {
+                // Move the robot to the resource location
                 case RobotState.OnResource:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
+                        // Attach the resource to the robot and move to the delivery location
                         robotTarget[i].SetParent(robot.transform);
                         robot.transform.GetChild(1).localPosition = new Vector3(0, 0.2f, 0);
                         string objectTag = robot.transform.GetChild(1).gameObject.tag;
 
-
+                        // Move the robot to the delivery location based on the object it is carrying
                         if (objectTag == "Silicon")
                         {
-                            MoveRobotToSiliconDelivery(robot, agent);
+                            MoveRobotToSiliconDelivery(agent);
                             robotStates[i] = RobotState.OnDelivery;
                         }
-                        else if(objectTag == "Iron Mine" || objectTag == "Cooper Mine")
+                        else if (objectTag == "Iron Mine" || objectTag == "Cooper Mine")
                         {
-                            MoveRobotToMineDelivery(robot, agent);
+                            MoveRobotToMineDelivery(agent);
                             robotStates[i] = RobotState.OnDelivery;
                         }
-                        else if(objectTag == "Phone")
+                        else if (objectTag == "Phone")
                         {
-                            MoveRobotToPhoneDelivery(robot, agent);
+                            MoveRobotToPhoneDelivery(agent);
                             robotStates[i] = RobotState.OnDelivery;
                         }
                     }
                     break;
 
+                // Move the robot to the park
                 case RobotState.OnDelivery:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
@@ -188,37 +179,31 @@ public class RobotManager : MonoBehaviour
         {
             Transform robot = robotList[currentRobotIndex];
             NavMeshAgent agent = robot.GetComponent<NavMeshAgent>();
-            MoveRobotToProductLocation(robot, agent);
+            MoveRobotToProductLocation(agent);
             robotStates[currentRobotIndex] = RobotState.OnResource;
         }
     }
 
-    private void MoveRobotToProductLocation(Transform robot, NavMeshAgent agent)
+    private void MoveRobotToProductLocation(NavMeshAgent agent)
     {
         // Move the robot to the product location
         robotTarget[currentRobotIndex] = ResourceManager.GetAvailableResource();
-
-        for(int i = 0; i < robotTarget.Count; i++)
-        {
-            Debug.Log(robotTarget[i]);
-        }
-        
         agent.SetDestination(robotTarget[currentRobotIndex].position);
     }
 
-    private void MoveRobotToMineDelivery(Transform robot, NavMeshAgent agent)
+    private void MoveRobotToMineDelivery(NavMeshAgent agent)
     {
         // Move the robot to the destination
         agent.SetDestination(mineDelivery.position);
     }
 
-    private void MoveRobotToSiliconDelivery(Transform robot, NavMeshAgent agent)
+    private void MoveRobotToSiliconDelivery(NavMeshAgent agent)
     {
         // Move the robot to the destination
         agent.SetDestination(siliconDelivery.position);
     }
 
-    private void MoveRobotToPhoneDelivery(Transform robot, NavMeshAgent agent)
+    private void MoveRobotToPhoneDelivery(NavMeshAgent agent)
     {
         // Move the robot to the destination
         agent.SetDestination(phoneDelivery.position);

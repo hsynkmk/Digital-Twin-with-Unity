@@ -7,7 +7,6 @@ public class DragAndDropMine : MonoBehaviour
     [SerializeField] private Transform resourceObject; // Parent transform for placed mines
 
     private GameObject selectedMinePrefab; // The currently selected mine prefab
-    private bool isPlacingMine; // Flag to indicate if a mine is currently being placed
     private RaycastHit hit; // The object that was hit by the ray
     private Ray ray; // The ray to cast from the camera to the mouse position
 
@@ -15,28 +14,28 @@ public class DragAndDropMine : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            PlaceMine();
+            TryPlaceMine();
         }
     }
 
-    // Place the selected mine in the scene at the target position
-    private void PlaceMine()
+    // Attempt to place the selected mine prefab
+    private void TryPlaceMine()
     {
-        if (isPlacingMine)
+        if (selectedMinePrefab != null)
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Ground"))
             {
-                InstantiateAndSetParent(selectedMinePrefab, hit.point);
-                ResetPlacement();
+                PlaceMinePrefabAt(hit.point);
+                ClearSelectedMine();
             }
         }
     }
 
-    // Instantiate the given prefab and set its parent
-    private void InstantiateAndSetParent(GameObject prefab, Vector3 position)
+    // Place the selected mine prefab at the given position
+    private void PlaceMinePrefabAt(Vector3 position)
     {
-        GameObject newMine = Instantiate(prefab, position, Quaternion.identity);
+        GameObject newMine = Instantiate(selectedMinePrefab, position, Quaternion.identity);
         newMine.transform.SetParent(resourceObject);
         ResourceManager.availableResources.Enqueue(newMine.transform); // Assuming this handles resource availability
     }
@@ -44,17 +43,21 @@ public class DragAndDropMine : MonoBehaviour
     // Select a mine from the build menu
     public void SelectMine(int index)
     {
-        if (index >= 0 && index < minePrefabs.Length)
+        if (IsValidMineIndex(index))
         {
             selectedMinePrefab = minePrefabs[index];
-            isPlacingMine = true;
         }
     }
 
-    // Reset placement variables
-    private void ResetPlacement()
+    // Check if the mine index is valid
+    private bool IsValidMineIndex(int index)
     {
-        isPlacingMine = false;
+        return index >= 0 && index < minePrefabs.Length;
+    }
+
+    // Clear the selected mine prefab and reset placement
+    private void ClearSelectedMine()
+    {
         selectedMinePrefab = null;
     }
 }
