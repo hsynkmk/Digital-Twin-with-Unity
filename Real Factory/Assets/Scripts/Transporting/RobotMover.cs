@@ -34,8 +34,8 @@ public class RobotManager : MonoBehaviour
 
     private void Awake()
     {
-        Objects.resourceTransform = productTransform;
-        Objects.MakeAllAvailable();
+        ResourceManager.resourceTransform = productTransform;
+        ResourceManager.InitializeAvailableResources();
 
         Park.parkTransform = parkTransform;
         Park.Initialize();
@@ -58,10 +58,10 @@ public class RobotManager : MonoBehaviour
 
     private void Update()
     {
-        if (Objects.IsAvailable())
+        if (ResourceManager.HasAvailableResources())
             StartNextRobot();
 
-        remainingObjects = Objects.resourceTransform.childCount;
+        remainingObjects = ResourceManager.resourceTransform.childCount;
         // Update the information text on each frame
         UpdateInfoText();
 
@@ -132,7 +132,6 @@ public class RobotManager : MonoBehaviour
 
     private void MoveRobots()
     {
-        Debug.Log("dis: "+Objects.resourceTransform.childCount);
 
         // Move robots based on their states
         for (int i = 0; i < robotStates.Count; i++)
@@ -197,7 +196,7 @@ public class RobotManager : MonoBehaviour
     private void MoveRobotToProductLocation(Transform robot, NavMeshAgent agent)
     {
         // Move the robot to the product location
-        robotTarget[currentRobotIndex] = Objects.GetAvailableProduct();
+        robotTarget[currentRobotIndex] = ResourceManager.GetAvailableResource();
 
         for(int i = 0; i < robotTarget.Count; i++)
         {

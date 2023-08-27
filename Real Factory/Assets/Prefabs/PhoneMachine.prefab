@@ -411,7 +411,7 @@ GameObject:
   - component: {fileID: 7186207604760509562}
   - component: {fileID: 6748441540455446005}
   m_Layer: 0
-  m_Name: ObjectCount
+  m_Name: ResourceCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -842,7 +842,7 @@ MonoBehaviour:
   blinkCount: 3
   conversionTime: 2
   phoneCountText: {fileID: 0}
-  objectCountText: {fileID: 6748441540455446005}
+  resourceCountText: {fileID: 6748441540455446005}
 --- !u!1 &8545509686140133121
 GameObject:
   m_ObjectHideFlags: 0

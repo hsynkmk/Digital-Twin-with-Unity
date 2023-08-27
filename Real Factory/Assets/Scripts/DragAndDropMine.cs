@@ -1,60 +1,60 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 public class DragAndDropMine : MonoBehaviour
 {
-    [SerializeField] private GameObject[] buildObjects; // Array of objects to build
-    [SerializeField] private Transform resourceObject;
+    [SerializeField] private GameObject[] minePrefabs; // Array of mine prefabs
+    [SerializeField] private Transform resourceObject; // Parent transform for placed mines
 
-    private GameObject selectedObject; // The currently selected object
-    private bool selected; // The preview object
+    private GameObject selectedMinePrefab; // The currently selected mine prefab
+    private bool isPlacingMine; // Flag to indicate if a mine is currently being placed
     private RaycastHit hit; // The object that was hit by the ray
     private Ray ray; // The ray to cast from the camera to the mouse position
-    private int selectedMineTypeIndex = -1; // Index of the selected mine type, -1 means no mine type is selected
-
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            PlaceObject();
+            PlaceMine();
         }
     }
 
-    // Place the selected object in the scene at the target position
-    private void PlaceObject()
+    // Place the selected mine in the scene at the target position
+    private void PlaceMine()
     {
-        if (selected)
+        if (isPlacingMine)
         {
-            // The user has selected a mine type and should now click a conveyor
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Ground"))
             {
-                GameObject newMine = Instantiate(selectedObject, hit.point, Quaternion.identity);
-                newMine.transform.SetParent(resourceObject);
-                Objects.availableResources.Enqueue(newMine.transform);
-                selectedMineTypeIndex = -1; // Reset the selected mine type index
-                selected = false; // Reset the selected flag
+                InstantiateAndSetParent(selectedMinePrefab, hit.point);
+                ResetPlacement();
             }
         }
     }
 
-    // Select an object from the build menu
-    public void SelectObject(int index)
+    // Instantiate the given prefab and set its parent
+    private void InstantiateAndSetParent(GameObject prefab, Vector3 position)
     {
-        if (index >= 0 && index < buildObjects.Length)
+        GameObject newMine = Instantiate(prefab, position, Quaternion.identity);
+        newMine.transform.SetParent(resourceObject);
+        ResourceManager.availableResources.Enqueue(newMine.transform); // Assuming this handles resource availability
+    }
+
+    // Select a mine from the build menu
+    public void SelectMine(int index)
+    {
+        if (index >= 0 && index < minePrefabs.Length)
         {
-
-            // Set the selected mine type index and return
-            selected = true;
-            selectedMineTypeIndex = index;
-            selectedObject = buildObjects[index];
-            return;
-
+            selectedMinePrefab = minePrefabs[index];
+            isPlacingMine = true;
         }
     }
 
+    // Reset placement variables
+    private void ResetPlacement()
+    {
+        isPlacingMine = false;
+        selectedMinePrefab = null;
+    }
 }

@@ -12,24 +12,27 @@ public class PhoneMachine : MonoBehaviour
     [SerializeField] private float blinkDuration = 0.2f; // Duration for each light blink
     [SerializeField] private int blinkCount = 3; // Number of times to blink the light
     [SerializeField] private float conversionTime = 2f; // Duration of the conversion process
-    [SerializeField] TextMeshProUGUI phoneCountText;
-    [SerializeField] TextMeshPro objectCountText;
+    [SerializeField] private TextMeshProUGUI phoneCountText;
+    [SerializeField] private TextMeshPro resourceCountText;
     private int ironCount = 0;
     private int copperCount = 0;
     private int chipCount = 0;
 
     private void Update()
     {
-        objectCountText.text = $"Refined Iron: {ironCount}\nRefined Copper: {copperCount}\nChip: {chipCount}";
+        UpdateResourceCountUI();
     }
 
+    private void UpdateResourceCountUI()
+    {
+        resourceCountText.text = $"Refined Iron: {ironCount}\nRefined Copper: {copperCount}\nChip: {chipCount}";
+    }
 
     private void OnCollisionEnter(Collision other)
     {
         if (IsRefinedResource(other.gameObject))
         {
             IncrementResourceCount(other.gameObject);
-
             Destroy(other.gameObject);
 
             if (HasEnoughResources())
@@ -73,14 +76,13 @@ public class PhoneMachine : MonoBehaviour
     private bool HasEnoughResources()
     {
         // Check if there are enough resources to produce a phone based on the required amounts
-        return ((ironCount >= requiredIron) && (copperCount >= requiredCopper) && (chipCount >= requiredChip));
+        return ironCount >= requiredIron && copperCount >= requiredCopper && chipCount >= requiredChip;
     }
 
     private IEnumerator ProducePhone()
     {
         // Spawn position for the phone
         Vector3 spawnPosition = transform.position + new Vector3(0, 2, 3);
-        //Vector3 spawnPosition = new Vector3(10, 2, -15);
 
         // Get the processing light component
         Light processingLight = GetComponentInChildren<Light>();
@@ -98,9 +100,8 @@ public class PhoneMachine : MonoBehaviour
 
         // Instantiate a new phone at the spawn position and increase the phone count
         GameObject newPhone = Instantiate(phonePrefab, spawnPosition, Quaternion.identity);
-
         newPhone.transform.SetParent(resourceObject);
-        Objects.availableResources.Enqueue(newPhone.transform);
+        ResourceManager.availableResources.Enqueue(newPhone.transform);
 
         int phoneCount = int.Parse(phoneCountText.text);
         phoneCount++;
