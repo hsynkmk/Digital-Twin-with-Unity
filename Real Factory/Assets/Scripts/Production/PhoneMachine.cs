@@ -76,11 +76,12 @@ public class PhoneMachine : MonoBehaviour
     private bool HasEnoughResources()
     {
         // Check if there are enough resources to produce a phone based on the required amounts
-        return ironCount >= requiredIron && copperCount >= requiredCopper && chipCount >= requiredChip;
+        return ((ironCount >= requiredIron) && (copperCount >= requiredCopper) && (chipCount >= requiredChip));
     }
 
     private IEnumerator ProducePhone()
     {
+        DecrementResourceCount(); // Decrease the resource counts after producing a phone
         // Spawn position for the phone
         Vector3 spawnPosition = transform.position + new Vector3(0, 2, 3);
 
@@ -107,6 +108,5 @@ public class PhoneMachine : MonoBehaviour
         phoneCount++;
         phoneCountText.text = phoneCount.ToString();
 
-        DecrementResourceCount(); // Decrease the resource counts after producing a phone
     }
 }

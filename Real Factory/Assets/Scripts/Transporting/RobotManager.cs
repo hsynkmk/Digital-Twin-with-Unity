@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using System.Drawing;
 
 public class RobotManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class RobotManager : MonoBehaviour
         OnPark,
         OnResource,
         OnDelivery,
+        OnCharge
     }
 
     [SerializeField] private TextMeshProUGUI infoText;
@@ -22,6 +24,8 @@ public class RobotManager : MonoBehaviour
 
     private List<Transform> robotList = new List<Transform>();
     private List<Transform> robotTarget = new List<Transform>();
+    private float[] timers; // Array to store timers for each robot
+    private int[] robotBatteries; // Array to store battery levels for each robot
     private List<RobotState> robotStates = new List<RobotState>();
 
     private int currentRobotIndex;
@@ -41,6 +45,17 @@ public class RobotManager : MonoBehaviour
     {
         // Initialize robots and update remaining objects
         InitializeRobots();
+
+        int numRobots = robotList.Count;
+        timers = new float[numRobots];
+        robotBatteries = new int[numRobots];
+
+        // Initialize timers and battery levels for each robot
+        for (int i = 0; i < numRobots; i++)
+        {
+            timers[i] = 0f;
+            robotBatteries[i] = 100; // Initial battery level
+        }
     }
 
     private void Update()
@@ -55,6 +70,54 @@ public class RobotManager : MonoBehaviour
         // Update robot states and move them
         UpdateParkStates();
         MoveRobots();
+        BatteryManager();
+    }
+
+
+
+    private void BatteryManager()
+    {
+        float decreaseInterval = 1f; // Decrease the int every 1 second
+
+        for (int i = 0; i < robotStates.Count; i++)
+        {
+            // Update the timer with the time passed since the last frame for each robot
+            timers[i] += Time.deltaTime;
+
+            if (robotStates[i] == RobotState.OnPark)
+            {
+                if (timers[i] >= decreaseInterval)
+                {
+                    // Decrease the int variable by 1
+                    robotBatteries[i]++;
+
+                    // Reset the timer for this robot
+                    timers[i] = 0f;
+                }
+            }
+            else
+            {
+                // Check if the timer has reached the desired interval (1 second) for each robot
+                if (timers[i] >= decreaseInterval)
+                {
+                    // Decrease the int variable by 1 for this robot
+                    robotBatteries[i]--;
+
+                    // Reset the timer for this robot
+                    timers[i] = 0f;
+
+                    // Optional: Check if the int variable has reached a certain value and handle it
+                    if (robotBatteries[i] <= 30)
+                    {
+                        robotStates[i] = RobotState.OnCharge;
+                    }
+                }
+            }
+
+            // Update the battery text for each robot
+            TextMeshPro batteryText = robotList[i].GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+            batteryText.text = robotBatteries[i].ToString();
+        }
     }
 
     private void UpdateInfoText()
@@ -83,7 +146,6 @@ public class RobotManager : MonoBehaviour
         // Update the UI text to show relevant information
         infoText.text += $"\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
     }
-
 
     private void InitializeRobots()
     {
@@ -175,7 +237,7 @@ public class RobotManager : MonoBehaviour
     private void StartNextRobot()
     {
         // Start the next robot if conditions are met
-        if (robotStates[currentRobotIndex] == RobotState.OnPark)
+        if (robotStates[currentRobotIndex] == RobotState.OnPark && robotBatteries[currentRobotIndex] > 30)
         {
             Transform robot = robotList[currentRobotIndex];
             NavMeshAgent agent = robot.GetComponent<NavMeshAgent>();
