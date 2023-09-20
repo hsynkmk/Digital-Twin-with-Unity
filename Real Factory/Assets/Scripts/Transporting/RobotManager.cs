@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
 using System.Drawing;
+using System;
+using System.Collections;
 
 public class RobotManager : MonoBehaviour
 {
@@ -12,7 +14,6 @@ public class RobotManager : MonoBehaviour
         OnPark,
         OnResource,
         OnDelivery,
-        OnCharge
     }
 
     [SerializeField] private TextMeshProUGUI infoText;
@@ -21,6 +22,7 @@ public class RobotManager : MonoBehaviour
     [SerializeField] private Transform phoneDelivery;
     [SerializeField] private Transform productTransform;
     [SerializeField] private Transform parkTransform;
+    [SerializeField] private int minBattery = 70;
 
     private List<Transform> robotList = new List<Transform>();
     private List<Transform> robotTarget = new List<Transform>();
@@ -73,8 +75,6 @@ public class RobotManager : MonoBehaviour
         BatteryManager();
     }
 
-
-
     private void BatteryManager()
     {
         float decreaseInterval = 1f; // Decrease the int every 1 second
@@ -83,13 +83,22 @@ public class RobotManager : MonoBehaviour
         {
             // Update the timer with the time passed since the last frame for each robot
             timers[i] += Time.deltaTime;
+            NavMeshAgent agent = robotList[i].GetComponent<NavMeshAgent>();
 
-            if (robotStates[i] == RobotState.OnPark)
+            if (robotStates[i] == RobotState.OnPark && !agent.pathPending && agent.remainingDistance < 0.1f)
             {
-                if (timers[i] >= decreaseInterval)
+                Light parkLight = Park.parkTransform.GetChild(i).GetChild(2).GetComponent<Light>();
+                parkLight.enabled = true;
+                if (timers[i] >= decreaseInterval && robotBatteries[i] < 100)
                 {
                     // Decrease the int variable by 1
                     robotBatteries[i]++;
+
+                    
+
+
+                    parkLight.enabled = false;
+
 
                     // Reset the timer for this robot
                     timers[i] = 0f;
@@ -107,16 +116,17 @@ public class RobotManager : MonoBehaviour
                     timers[i] = 0f;
 
                     // Optional: Check if the int variable has reached a certain value and handle it
-                    if (robotBatteries[i] <= 30)
+                    if (robotBatteries[i] <= minBattery && (!agent.pathPending && agent.remainingDistance < 0.1f))
                     {
-                        robotStates[i] = RobotState.OnCharge;
+                        agent.SetDestination(Park.GetIndex(i).position);
                     }
                 }
             }
 
             // Update the battery text for each robot
-            TextMeshPro batteryText = robotList[i].GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
-            batteryText.text = robotBatteries[i].ToString();
+            TextMeshPro robotText = robotList[i].GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+            robotText.transform.LookAt(Camera.main.transform);
+            robotText.text = "Battery: " + robotBatteries[i].ToString() + "\nState: " + robotStates[i].ToString();
         }
     }
 
@@ -134,11 +144,6 @@ public class RobotManager : MonoBehaviour
             {
                 fullParks++;
             }
-        }
-
-        for (int i = 0; i < robotList.Count; i++)
-        {
-            text += "Robot " + (i + 1) + ": " + robotStates[i].ToString() + "\r\n";
         }
 
         infoText.text = text;
@@ -167,12 +172,8 @@ public class RobotManager : MonoBehaviour
             {
                 Park.MakeAvailable(i);
             }
-        }
 
-        // Find the next available robot to start
-        for (int i = 0; i < robotStates.Count; i++)
-        {
-            if (robotStates[i] == RobotState.OnPark)
+            if (robotStates[i] == RobotState.OnPark && robotBatteries[i] > minBattery + 15)
             {
                 Park.MakeUnavailable(i);
                 currentRobotIndex = i;
@@ -224,8 +225,14 @@ public class RobotManager : MonoBehaviour
                 case RobotState.OnDelivery:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
-                        // Attach the destination and move back to the park
+                        Rigidbody rb = robot.GetChild(1).GetComponent<Rigidbody>();
                         robot.GetChild(1).parent = null;
+                        // Calculate the force direction (for example, forward)
+                        Vector3 forceDirection = -transform.forward;
+
+                        // Apply force to the object
+                        rb.AddForce(forceDirection * 6, ForceMode.Impulse);
+
                         MoveRobotToPark(i, agent);
                         robotStates[i] = RobotState.OnPark;
                     }
@@ -234,10 +241,11 @@ public class RobotManager : MonoBehaviour
         }
     }
 
+
     private void StartNextRobot()
     {
         // Start the next robot if conditions are met
-        if (robotStates[currentRobotIndex] == RobotState.OnPark && robotBatteries[currentRobotIndex] > 30)
+        if (robotStates[currentRobotIndex] == RobotState.OnPark && robotBatteries[currentRobotIndex] > minBattery + 15)
         {
             Transform robot = robotList[currentRobotIndex];
             NavMeshAgent agent = robot.GetComponent<NavMeshAgent>();
