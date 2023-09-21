@@ -102,6 +102,7 @@ public class PhoneMachine : MonoBehaviour
         // Instantiate a new phone at the spawn position and increase the phone count
         GameObject newPhone = Instantiate(phonePrefab, spawnPosition, Quaternion.identity);
         newPhone.transform.SetParent(resourceObject);
+        yield return new WaitForSeconds(5);
         ResourceManager.availableResources.Enqueue(newPhone.transform);
 
         int phoneCount = int.Parse(phoneCountText.text);

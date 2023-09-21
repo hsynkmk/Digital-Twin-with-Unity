@@ -2,9 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
-using System.Drawing;
-using System;
-using System.Collections;
 
 public class RobotManager : MonoBehaviour
 {
@@ -19,10 +16,11 @@ public class RobotManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private Transform mineDelivery;
     [SerializeField] private Transform siliconDelivery;
+    [SerializeField] private Transform productDelivery;
     [SerializeField] private Transform phoneDelivery;
     [SerializeField] private Transform productTransform;
     [SerializeField] private Transform parkTransform;
-    [SerializeField] private int minBattery = 70;
+    [SerializeField] private int minBattery = 60;
 
     private List<Transform> robotList = new List<Transform>();
     private List<Transform> robotTarget = new List<Transform>();
@@ -93,13 +91,7 @@ public class RobotManager : MonoBehaviour
                 {
                     // Decrease the int variable by 1
                     robotBatteries[i]++;
-
-                    
-
-
                     parkLight.enabled = false;
-
-
                     // Reset the timer for this robot
                     timers[i] = 0f;
                 }
@@ -115,8 +107,8 @@ public class RobotManager : MonoBehaviour
                     // Reset the timer for this robot
                     timers[i] = 0f;
 
-                    // Optional: Check if the int variable has reached a certain value and handle it
-                    if (robotBatteries[i] <= minBattery && (!agent.pathPending && agent.remainingDistance < 0.1f))
+                    // Check if the int variable has reached a certain value and handle it
+                    if ((robotBatteries[i] <= minBattery) && (!agent.pathPending && agent.remainingDistance < 0.1f))
                     {
                         agent.SetDestination(Park.GetIndex(i).position);
                     }
@@ -125,7 +117,7 @@ public class RobotManager : MonoBehaviour
 
             // Update the battery text for each robot
             TextMeshPro robotText = robotList[i].GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
-            robotText.transform.LookAt(Camera.main.transform);
+            robotText.transform.LookAt(2 * robotText.transform.position - Camera.main.transform.position);
             robotText.text = "Battery: " + robotBatteries[i].ToString() + "\nState: " + robotStates[i].ToString();
         }
     }
@@ -215,7 +207,7 @@ public class RobotManager : MonoBehaviour
                         }
                         else if (objectTag == "Phone")
                         {
-                            MoveRobotToPhoneDelivery(agent);
+                            MoveRobotToProductDelivery(agent);
                             robotStates[i] = RobotState.OnDelivery;
                         }
                     }
@@ -247,6 +239,7 @@ public class RobotManager : MonoBehaviour
         // Start the next robot if conditions are met
         if (robotStates[currentRobotIndex] == RobotState.OnPark && robotBatteries[currentRobotIndex] > minBattery + 15)
         {
+            robotTarget[currentRobotIndex] = ResourceManager.GetAvailableResource();
             Transform robot = robotList[currentRobotIndex];
             NavMeshAgent agent = robot.GetComponent<NavMeshAgent>();
             MoveRobotToProductLocation(agent);
@@ -257,7 +250,7 @@ public class RobotManager : MonoBehaviour
     private void MoveRobotToProductLocation(NavMeshAgent agent)
     {
         // Move the robot to the product location
-        robotTarget[currentRobotIndex] = ResourceManager.GetAvailableResource();
+
         agent.SetDestination(robotTarget[currentRobotIndex].position);
     }
 
@@ -273,10 +266,10 @@ public class RobotManager : MonoBehaviour
         agent.SetDestination(siliconDelivery.position);
     }
 
-    private void MoveRobotToPhoneDelivery(NavMeshAgent agent)
+    private void MoveRobotToProductDelivery(NavMeshAgent agent)
     {
         // Move the robot to the destination
-        agent.SetDestination(phoneDelivery.position);
+        agent.SetDestination(productDelivery.position);
     }
 
     private void MoveRobotToPark(int index, NavMeshAgent agent)
@@ -284,7 +277,6 @@ public class RobotManager : MonoBehaviour
         // Update remaining and delivered objects, move robot to the park
         remainingObjects--;
         deliveredObjects++;
-
         agent.SetDestination(Park.GetIndex(index).position);
     }
 }

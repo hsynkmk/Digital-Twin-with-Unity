@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 361028311077084847}
   - component: {fileID: 3126249223658228986}
   - component: {fileID: 6353083248636724758}
-  - component: {fileID: 5801532643170253973}
   m_Layer: 0
   m_Name: Destination
   m_TagString: Silicon Place
@@ -120,15 +119,3 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7358518630090458248}
   m_CullTransparentMesh: 1
---- !u!114 &5801532643170253973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7358518630090458248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7d576cb9c738b147bb95038cc2435c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
