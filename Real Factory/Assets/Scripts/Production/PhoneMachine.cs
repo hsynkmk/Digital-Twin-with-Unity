@@ -76,11 +76,12 @@ public class PhoneMachine : MonoBehaviour
     private bool HasEnoughResources()
     {
         // Check if there are enough resources to produce a phone based on the required amounts
-        return ironCount >= requiredIron && copperCount >= requiredCopper && chipCount >= requiredChip;
+        return ((ironCount >= requiredIron) && (copperCount >= requiredCopper) && (chipCount >= requiredChip));
     }
 
     private IEnumerator ProducePhone()
     {
+        DecrementResourceCount(); // Decrease the resource counts after producing a phone
         // Spawn position for the phone
         Vector3 spawnPosition = transform.position + new Vector3(0, 2, 3);
 
@@ -101,12 +102,12 @@ public class PhoneMachine : MonoBehaviour
         // Instantiate a new phone at the spawn position and increase the phone count
         GameObject newPhone = Instantiate(phonePrefab, spawnPosition, Quaternion.identity);
         newPhone.transform.SetParent(resourceObject);
+        yield return new WaitForSeconds(5);
         ResourceManager.availableResources.Enqueue(newPhone.transform);
 
         int phoneCount = int.Parse(phoneCountText.text);
         phoneCount++;
         phoneCountText.text = phoneCount.ToString();
 
-        DecrementResourceCount(); // Decrease the resource counts after producing a phone
     }
 }

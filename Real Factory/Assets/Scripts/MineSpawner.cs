@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MineSpawner : MonoBehaviour
+public class DragAndDropMine : MonoBehaviour
 {
     [SerializeField] private GameObject[] minePrefabs; // Array of mine prefabs
     [SerializeField] private Transform resourceObject; // Parent transform for placed mines
@@ -29,8 +29,6 @@ public class MineSpawner : MonoBehaviour
     // Place the selected mine prefab at the given position
     private void PlaceMinePrefabAt()
     {
-        //GameObject newMine = Instantiate(selectedMinePrefab, spawnPosition.position + new Vector3(0, -2, 0), Quaternion.identity);
-        //newMine.transform.SetParent(resourceObject);
         ResourceManager.availableResources.Enqueue(selectedMinePrefab.transform);
     }
 
