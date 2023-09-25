@@ -9,6 +9,7 @@ public enum RobotState
     OnPark,
     OnResource,
     OnDelivery,
+    OnSpawn
 }
 
 public class Robot

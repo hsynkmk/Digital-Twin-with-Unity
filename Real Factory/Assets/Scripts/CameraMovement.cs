@@ -14,39 +14,23 @@ using UnityEngine;
 /// </summary>
 public class FreeCam : MonoBehaviour
 {
-    /// <summary>
-    ///     Normal speed of camera movement.
-    /// </summary>
-    [SerializeField]
-    float m_MovementSpeed = 10f;
+    // Normal speed of camera movement.
+    [SerializeField] float m_MovementSpeed = 10f;
 
-    /// <summary>
-    ///     Speed of camera movement when shift is held down,
-    /// </summary>
-    [SerializeField]
-    float m_FastMovementSpeed = 100f;
+    // Speed of camera movement when shift is held down,
+    [SerializeField] float m_FastMovementSpeed = 100f;
 
-    /// <summary>
-    ///     Sensitivity for free look.
-    /// </summary>
-    [SerializeField]
-    float m_FreeLookSensitivity = 3f;
+    // Sensitivity for free look.
+    [SerializeField] float m_FreeLookSensitivity = 3f;
 
-    /// <summary>
-    ///     Amount to zoom the camera when using the mouse wheel.
-    /// </summary>
-    [SerializeField]
-    float m_ZoomSensitivity = 10f;
+    // Amount to zoom the camera when using the mouse wheel.
+    [SerializeField] float m_ZoomSensitivity = 10f;
 
-    /// <summary>
-    ///     Amount to zoom the camera when using the mouse wheel (fast mode).
-    /// </summary>
-    [SerializeField]
-    float m_FastZoomSensitivity = 50f;
+    // Amount to zoom the camera when using the mouse wheel (fast mode).
+    [SerializeField] float m_FastZoomSensitivity = 50f;
 
-    /// <summary>
-    ///     Set to true when free looking (on right mouse button).
-    /// </summary>
+
+    // Set to true when free looking (on right mouse button).
     bool m_Looking;
 
     void Update()
@@ -96,9 +80,7 @@ public class FreeCam : MonoBehaviour
         StopLooking();
     }
 
-    /// <summary>
-    ///     Enable free looking.
-    /// </summary>
+    // Enable free looking.
     void StartLooking()
     {
         m_Looking = true;
@@ -106,9 +88,7 @@ public class FreeCam : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    /// <summary>
-    ///     Disable free looking.
-    /// </summary>
+    // Disable free looking.
     void StopLooking()
     {
         m_Looking = false;
