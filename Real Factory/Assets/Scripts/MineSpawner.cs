@@ -4,8 +4,6 @@ using UnityEngine.EventSystems;
 public class DragAndDropMine : MonoBehaviour
 {
     [SerializeField] private GameObject[] minePrefabs; // Array of mine prefabs
-    [SerializeField] private Transform resourceObject; // Parent transform for placed mines
-    [SerializeField] private Transform spawnPosition; // The position to place the mine prefab
 
     private GameObject selectedMinePrefab; // The currently selected mine prefab
 

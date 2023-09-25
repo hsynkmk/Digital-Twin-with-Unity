@@ -9,12 +9,11 @@ public class RobotManager : MonoBehaviour
     [SerializeField] private Transform mineDelivery;
     [SerializeField] private Transform siliconDelivery;
     [SerializeField] private Transform productDelivery;
+    [SerializeField] private Transform productLocation;
     [SerializeField] private Transform parkTransform;
     [SerializeField] private Transform spawnTransform;
     [SerializeField] private Transform spawnPosition;
-    [SerializeField] private GameObject resourceObject;
     [SerializeField] private int minBattery = 60;
-
 
     public List<Robot> robotList = new List<Robot>();
     private int currentRobotIndex;
@@ -22,30 +21,24 @@ public class RobotManager : MonoBehaviour
     private int remainingObjects;
 
     private void Awake()
-    {   // Initialize the resource manager and park
-        //ResourceManager.InitializeAvailableResources();
-
+    {   
         Park.parkTransform = parkTransform;
         Park.Initialize();
     }
 
     private void Start()
     {
-        // Initialize robots and update remaining objects
         InitializeRobots();
     }
 
     private void Update()
-    {Debug.Log(ResourceManager.availableResources.Count.ToString());
-        // Start the next robot if there are available resources
+    {
         if (ResourceManager.HasAvailableResources())
             StartNextRobot();
 
-        // Update the information text on each frame
         UpdateInfoText();
         UpdateBatteryText();
 
-        // Update robot states and move them
         UpdateParkStates();
         MoveRobots();
 
@@ -53,7 +46,6 @@ public class RobotManager : MonoBehaviour
 
     private void InitializeRobots()
     {
-        // Initialize robot list and states based on the children of this transform
         for (int i = 0; i < transform.childCount; i++)
         {
             robotList.Add(new Robot(i, transform.GetChild(i), null, Park.GetIndex(i), RobotState.OnPark, false, 0f, 100));
@@ -64,7 +56,6 @@ public class RobotManager : MonoBehaviour
     {
         for (int i = 0; i < robotList.Count; i++)
         {
-            //robotList[i].BatteryManager();
             TextMeshPro robotText = robotList[i].transformRobot.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
             robotText.transform.LookAt(2 * robotText.transform.position - Camera.main.transform.position);
             robotText.text = robotList[i].BatteryManager();
@@ -73,10 +64,8 @@ public class RobotManager : MonoBehaviour
 
     private void UpdateInfoText()
     {
-        // Update the information text
         int fullParks = 0;
 
-        // Count the number of robots in different states
         for (int i = 0; i < robotList.Count; i++)
         {
             if (robotList[i].robotState == RobotState.OnPark)
@@ -85,7 +74,6 @@ public class RobotManager : MonoBehaviour
             }
         }
 
-        // Update the UI text to show relevant information
         infoText.text = $"\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
     }
 
@@ -129,7 +117,6 @@ public class RobotManager : MonoBehaviour
                     }
                     break;
 
-                // Move the robot to the resource location
                 case RobotState.OnResource:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
@@ -144,7 +131,6 @@ public class RobotManager : MonoBehaviour
 
                         string objectTag = robot.transform.GetChild(1).gameObject.tag;
 
-                        // Move the robot to the delivery location based on the object it is carrying
                         if (objectTag == "Silicon")
                         {
                             MoveRobotToSiliconDelivery(agent);
@@ -163,6 +149,13 @@ public class RobotManager : MonoBehaviour
                     }
                     break;
 
+                case RobotState.OnProduct:
+                    if (!agent.pathPending && agent.remainingDistance < 0.1f)
+                    {
+
+                    }
+                    break;
+                    
                 // Move the robot to the park
                 case RobotState.OnDelivery:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
@@ -170,10 +163,7 @@ public class RobotManager : MonoBehaviour
                         Rigidbody rb = robot.GetChild(1).GetComponent<Rigidbody>();
                         robot.GetChild(1).parent = null;
                         deliveredObjects++;
-                        // Calculate the force direction (for example, forward)
                         Vector3 forceDirection = -transform.forward;
-
-                        // Apply force to the object
                         rb.AddForce(forceDirection * 6, ForceMode.Impulse);
 
                         MoveRobotToPark(i, agent);
@@ -197,7 +187,7 @@ public class RobotManager : MonoBehaviour
             if (robotList[currentRobotIndex].transformTarget.CompareTag("Phone"))
             {
                 MoveRobotToProductLocation(agent);
-                robotList[currentRobotIndex].robotState = RobotState.OnResource;
+                robotList[currentRobotIndex].robotState = RobotState.OnProduct;
             }
             else if(robotList[currentRobotIndex].transformTarget != null)
             {
@@ -214,7 +204,7 @@ public class RobotManager : MonoBehaviour
     }
     private void MoveRobotToProductLocation(NavMeshAgent agent)
     {
-        agent.SetDestination(robotList[currentRobotIndex].transformTarget.position);
+        agent.SetDestination(productLocation.position);
     }
 
     private void MoveRobotToMineDelivery(NavMeshAgent agent)
