@@ -5,15 +5,15 @@ using UnityEngine;
 public class PhoneMachine : MonoBehaviour
 {
     [SerializeField] private GameObject phonePrefab;
-    [SerializeField] private Transform resourceObject;
+    //[SerializeField] private Transform resourceObject;
     [SerializeField] private int requiredIron = 1;
     [SerializeField] private int requiredCopper = 1;
     [SerializeField] private int requiredChip = 1;
     [SerializeField] private float blinkDuration = 0.2f; // Duration for each light blink
     [SerializeField] private int blinkCount = 3; // Number of times to blink the light
     [SerializeField] private float conversionTime = 2f; // Duration of the conversion process
-    [SerializeField] private TextMeshProUGUI phoneCountText;
-    [SerializeField] private TextMeshPro resourceCountText;
+    //[SerializeField] private TextMeshProUGUI phoneCountText;
+    //[SerializeField] private TextMeshPro resourceCountText;
     private int ironCount = 0;
     private int copperCount = 0;
     private int chipCount = 0;
@@ -25,7 +25,7 @@ public class PhoneMachine : MonoBehaviour
 
     private void UpdateResourceCountUI()
     {
-        resourceCountText.text = $"Refined Iron: {ironCount}\nRefined Copper: {copperCount}\nChip: {chipCount}";
+        //resourceCountText.text = $"Refined Iron: {ironCount}\nRefined Copper: {copperCount}\nChip: {chipCount}";
     }
 
     private void OnCollisionEnter(Collision other)
@@ -83,7 +83,7 @@ public class PhoneMachine : MonoBehaviour
     {
         DecrementResourceCount(); // Decrease the resource counts after producing a phone
         // Spawn position for the phone
-        Vector3 spawnPosition = transform.position + new Vector3(0, 2, 3);
+        Vector3 spawnPosition = transform.position + new Vector3(0, 2, -3);
 
         // Get the processing light component
         Light processingLight = GetComponentInChildren<Light>();
@@ -105,9 +105,9 @@ public class PhoneMachine : MonoBehaviour
         yield return new WaitForSeconds(5);
         ResourceManager.availableResources.Enqueue(newPhone.transform);
 
-        int phoneCount = int.Parse(phoneCountText.text);
-        phoneCount++;
-        phoneCountText.text = phoneCount.ToString();
+        //int phoneCount = int.Parse(phoneCountText.text);
+        //phoneCount++;
+        //phoneCountText.text = phoneCount.ToString();
 
     }
 }

@@ -21,7 +21,7 @@ public class RobotManager : MonoBehaviour
     private int remainingObjects;
 
     private void Awake()
-    {   
+    {
         Park.parkTransform = parkTransform;
         Park.Initialize();
     }
@@ -123,7 +123,7 @@ public class RobotManager : MonoBehaviour
                         //Attach the resource to the robot and move to the delivery location
                         //robotList[i].transformTarget.SetParent(robot.transform);
                         //robot.transform.GetChild(1).localPosition = new Vector3(0, 0.2f, 0);
-                        if(robotList[i].transformTarget.CompareTag("Phone"))
+                        if (robotList[i].transformTarget.CompareTag("Phone"))
                         {
                             robotList[i].transformTarget.SetParent(robot.transform);
                             robot.transform.GetChild(1).localPosition = new Vector3(0, 0.2f, 0);
@@ -155,7 +155,7 @@ public class RobotManager : MonoBehaviour
 
                     }
                     break;
-                    
+
                 // Move the robot to the park
                 case RobotState.OnDelivery:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
@@ -163,7 +163,7 @@ public class RobotManager : MonoBehaviour
                         Rigidbody rb = robot.GetChild(1).GetComponent<Rigidbody>();
                         robot.GetChild(1).parent = null;
                         deliveredObjects++;
-                        Vector3 forceDirection = -transform.forward;
+                        Vector3 forceDirection = transform.forward;
                         rb.AddForce(forceDirection * 6, ForceMode.Impulse);
 
                         MoveRobotToPark(i, agent);
@@ -187,11 +187,10 @@ public class RobotManager : MonoBehaviour
             if (robotList[currentRobotIndex].transformTarget.CompareTag("Phone"))
             {
                 MoveRobotToProductLocation(agent);
-                robotList[currentRobotIndex].robotState = RobotState.OnProduct;
+                robotList[currentRobotIndex].robotState = RobotState.OnResource;
             }
-            else if(robotList[currentRobotIndex].transformTarget != null)
+            else if (robotList[currentRobotIndex].transformTarget != null)
             {
-                
                 MoveRobotToSpawnLocation(agent);
                 robotList[currentRobotIndex].robotState = RobotState.OnSpawn;
             }
