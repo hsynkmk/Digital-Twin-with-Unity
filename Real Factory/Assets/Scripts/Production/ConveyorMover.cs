@@ -9,28 +9,20 @@ public class ConveyorMover : MonoBehaviour
     private Direction direction; // The selected direction of conveyor movement
     private Rigidbody beltRigidbody; // Reference to the Rigidbody component of the conveyor
     private Material beltMaterial; // Reference to the Material used for the conveyor's texture
+    GameObject parent;
 
     private void Start()
     {
         // Get the references to the Rigidbody and Material components
         beltRigidbody = GetComponent<Rigidbody>();
         beltMaterial = GetComponent<Renderer>().material;
-    }
-
-    private void Update()
-    {
-        // Scroll the conveyor texture
-        ScrollTexture();
-
+        parent = transform.parent.gameObject;
         // Determine the direction based on the parent's rotation
         UpdateMovementDirection();
+        EnableConveyor();
     }
 
-    private void FixedUpdate()
-    {
-        // Move the conveyor in the selected direction
-        MoveConveyor();
-    }
+
 
     // Move the conveyor based on the selected direction
     private void MoveConveyor()
@@ -114,6 +106,23 @@ public class ConveyorMover : MonoBehaviour
         // Move the object's transform by the offset to place its pivot on the center of the conveyor
         collision.transform.position += offset;
 
+        EnableConveyor();
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+
+        // Scroll the conveyor texture
+        ScrollTexture();
+
+        // Move the conveyor in the selected direction
+        MoveConveyor();
+
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        DisableConveyor();
     }
 
     // Calculate the offset in the direction of the conveyor's movement
@@ -125,5 +134,33 @@ public class ConveyorMover : MonoBehaviour
         Vector3 offset = conveyorDirection * distanceAlongConveyor;
 
         return offset;
+    }
+
+    // Enable the conveyor's movement
+    private void EnableConveyor()
+    {
+        foreach (ConveyorMover Convey in parent.GetComponentsInChildren<ConveyorMover>())
+        {
+            Convey.enabled = true;
+        }
+
+        foreach (SideConveyorMover Convey in parent.GetComponentsInChildren<SideConveyorMover>())
+        {
+            Convey.enabled = true;
+        }
+    }
+
+    // Disable the conveyor's movement
+    private void DisableConveyor()
+    {
+        foreach (ConveyorMover Convey in parent.GetComponentsInChildren<ConveyorMover>())
+        {
+            Convey.enabled = false;
+        }
+
+        foreach (SideConveyorMover Convey in parent.GetComponentsInChildren<SideConveyorMover>())
+        {
+            Convey.enabled = false;
+        }
     }
 }

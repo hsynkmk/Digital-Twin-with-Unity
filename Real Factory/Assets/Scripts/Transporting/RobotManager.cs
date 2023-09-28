@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class RobotManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI infoText;
+    //[SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private Transform mineDelivery;
     [SerializeField] private Transform siliconDelivery;
     [SerializeField] private Transform productDelivery;
@@ -56,9 +57,14 @@ public class RobotManager : MonoBehaviour
     {
         for (int i = 0; i < robotList.Count; i++)
         {
-            TextMeshPro robotText = robotList[i].transformRobot.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
-            robotText.transform.LookAt(2 * robotText.transform.position - Camera.main.transform.position);
-            robotText.text = robotList[i].BatteryManager();
+            //TextMeshPro robotText = robotList[i].transformRobot.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+            //robotText.text = robotList[i].BatteryManager();
+            //robotText.transform.LookAt(2 * robotText.transform.position - Camera.main.transform.position);
+            robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(2).GetComponent<TextMeshProUGUI>().text = (i + 1).ToString();
+            robotList[i].transformRobot.GetChild(0).GetChild(2).GetComponent<TextMeshPro>().text = (i + 1).ToString();
+
+            TextMeshProUGUI batteryText = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
+            batteryText.text = robotList[i].BatteryManager();
         }
     }
 
@@ -74,7 +80,7 @@ public class RobotManager : MonoBehaviour
             }
         }
 
-        infoText.text = $"\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
+        //infoText.text = $"\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
     }
 
     private void UpdateParkStates()
@@ -111,7 +117,7 @@ public class RobotManager : MonoBehaviour
                 case RobotState.OnSpawn:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
-                        GameObject newMine = Instantiate(robotList[i].transformTarget.transform.gameObject, spawnPosition.position + new Vector3(0, -3, 0), Quaternion.identity);
+                        GameObject newMine = Instantiate(robotList[i].transformTarget.transform.gameObject, spawnPosition.position + new Vector3(0, -1, 0), Quaternion.identity);
                         newMine.transform.SetParent(robotList[i].transformRobot);
                         robotList[i].robotState = RobotState.OnResource;
                     }
@@ -120,9 +126,6 @@ public class RobotManager : MonoBehaviour
                 case RobotState.OnResource:
                     if (!agent.pathPending && agent.remainingDistance < 0.1f)
                     {
-                        //Attach the resource to the robot and move to the delivery location
-                        //robotList[i].transformTarget.SetParent(robot.transform);
-                        //robot.transform.GetChild(1).localPosition = new Vector3(0, 0.2f, 0);
                         if (robotList[i].transformTarget.CompareTag("Phone"))
                         {
                             robotList[i].transformTarget.SetParent(robot.transform);
@@ -164,7 +167,7 @@ public class RobotManager : MonoBehaviour
                         robot.GetChild(1).parent = null;
                         deliveredObjects++;
                         Vector3 forceDirection = transform.forward;
-                        rb.AddForce(forceDirection * 6, ForceMode.Impulse);
+                        rb.AddForce(forceDirection * 7, ForceMode.Impulse);
 
                         MoveRobotToPark(i, agent);
                         robotList[i].robotState = RobotState.OnPark;
@@ -173,7 +176,6 @@ public class RobotManager : MonoBehaviour
             }
         }
     }
-
 
     private void StartNextRobot()
     {

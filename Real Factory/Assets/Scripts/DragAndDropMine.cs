@@ -1,19 +1,20 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MineSpawner : MonoBehaviour
+public class MineSpawnera : MonoBehaviour
 {
     [SerializeField] private GameObject[] minePrefabs; // Array of mine prefabs
-    [SerializeField] private Transform resourceObject; // Parent transform for placed mines
-    [SerializeField] private Transform spawnPosition; // The position to place the mine prefab
+    [SerializeField] private TextMeshProUGUI infoText;
+    private int cooperCount;
+    private int ironCount;
+    private int siliconCount;
 
     private GameObject selectedMinePrefab; // The currently selected mine prefab
 
     private void Update()
     {
-
         TryPlaceMine();
-
     }
 
     // Attempt to place the selected mine prefab
@@ -29,8 +30,6 @@ public class MineSpawner : MonoBehaviour
     // Place the selected mine prefab at the given position
     private void PlaceMinePrefabAt()
     {
-        //GameObject newMine = Instantiate(selectedMinePrefab, spawnPosition.position + new Vector3(0, -2, 0), Quaternion.identity);
-        //newMine.transform.SetParent(resourceObject);
         ResourceManager.availableResources.Enqueue(selectedMinePrefab.transform);
     }
 
@@ -53,5 +52,17 @@ public class MineSpawner : MonoBehaviour
     private void ClearSelectedMine()
     {
         selectedMinePrefab = null;
+    }
+
+    public void UpdateInfoText()
+    {
+        if (selectedMinePrefab.CompareTag("Cooper Mine"))
+            cooperCount++;
+        else if (selectedMinePrefab.CompareTag("Iron Mine"))
+            ironCount++;
+        else if(selectedMinePrefab.CompareTag("Silicon"))
+            siliconCount++;
+
+        infoText.text = $"Spent Objects\nCooper: {cooperCount}\nIron: {ironCount}\nSilicon count: {siliconCount}";
     }
 }

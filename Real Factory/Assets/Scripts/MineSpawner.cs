@@ -1,17 +1,20 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragAndDropMine : MonoBehaviour
+public class MineSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] minePrefabs; // Array of mine prefabs
+    [SerializeField] private TextMeshProUGUI infoText;
+    private static int cooperCount;
+    private static int ironCount;
+    private static int siliconCount;
 
     private GameObject selectedMinePrefab; // The currently selected mine prefab
 
     private void Update()
     {
-
         TryPlaceMine();
-
     }
 
     // Attempt to place the selected mine prefab
@@ -49,5 +52,17 @@ public class DragAndDropMine : MonoBehaviour
     private void ClearSelectedMine()
     {
         selectedMinePrefab = null;
+    }
+
+    public void UpdateInfoText()
+    {
+        if (selectedMinePrefab.CompareTag("Cooper Mine"))
+            cooperCount++;
+        else if (selectedMinePrefab.CompareTag("Iron Mine"))
+            ironCount++;
+        else if (selectedMinePrefab.CompareTag("Silicon"))
+            siliconCount++;
+
+        infoText.text = $"Spent Objects\nCooper: {cooperCount}\nIron: {ironCount}\nSilicon count: {siliconCount}";
     }
 }

@@ -4,20 +4,10 @@ using UnityEngine;
 
 public class ConveyorManager : MonoBehaviour
 {
-    // Reference to the ConveyorMover component
-    private ConveyorMover conveyorMover;
+    [SerializeField] Collider topCollider;
 
     private void Start()
     {
-        // Get the ConveyorMover component attached to the conveyor object
-        conveyorMover = GetComponentInChildren<ConveyorMover>();
-
-        if (conveyorMover == null)
-        {
-            Debug.LogError("ConveyorMover component not found.");
-            return;
-        }
-
         // Disable the conveyor at the start
         DisableConveyor();
     }
@@ -25,28 +15,41 @@ public class ConveyorManager : MonoBehaviour
     // Enable the conveyor when an object enters the trigger collider
     private void OnTriggerEnter(Collider other)
     {
-
-            EnableConveyor();
-        
+        EnableConveyor();
     }
 
     // Disable the conveyor when an object exits the trigger collider
     private void OnTriggerExit(Collider other)
     {
-
-            DisableConveyor();
-        
+        DisableConveyor();
+        Debug.Log("sdssd");
     }
 
     // Enable the conveyor's movement
     private void EnableConveyor()
     {
-        conveyorMover.enabled = true;
+        foreach (ConveyorMover Convey in GetComponentsInChildren<ConveyorMover>())
+        {
+            Convey.enabled = true;
+        }
+
+        foreach (SideConveyorMover Convey in GetComponentsInChildren<SideConveyorMover>())
+        {
+            Convey.enabled = true;
+        }
     }
 
     // Disable the conveyor's movement
     private void DisableConveyor()
     {
-        conveyorMover.enabled = false;
+        foreach (ConveyorMover Convey in GetComponentsInChildren<ConveyorMover>())
+        {
+            Convey.enabled = false;
+        }
+
+        foreach (SideConveyorMover Convey in GetComponentsInChildren<SideConveyorMover>())
+        {
+            Convey.enabled = false;
+        }
     }
 }
