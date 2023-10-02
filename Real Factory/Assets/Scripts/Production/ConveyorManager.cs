@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ConveyorManager : MonoBehaviour
 {
-    [SerializeField] Collider topCollider;
+    //[SerializeField] Collider topCollider;
 
     private void Start()
     {
@@ -13,16 +14,19 @@ public class ConveyorManager : MonoBehaviour
     }
 
     // Enable the conveyor when an object enters the trigger collider
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        EnableConveyor();
+        if (other.IsDestroyed())
+            DisableConveyor();
+        else    
+            EnableConveyor();
+        
     }
-
+     
     // Disable the conveyor when an object exits the trigger collider
     private void OnTriggerExit(Collider other)
     {
         DisableConveyor();
-        Debug.Log("sdssd");
     }
 
     // Enable the conveyor's movement

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // Add this directive
+using UnityEngine.UI;
 
 public class PauseResume : MonoBehaviour
 {

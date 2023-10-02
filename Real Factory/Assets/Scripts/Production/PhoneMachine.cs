@@ -104,10 +104,10 @@ public class PhoneMachine : MonoBehaviour
         //newPhone.transform.SetParent(resourceObject);
         yield return new WaitForSeconds(5);
         ResourceManager.availableResources.Enqueue(newPhone.transform);
+        
 
         //int phoneCount = int.Parse(phoneCountText.text);
         //phoneCount++;
         //phoneCountText.text = phoneCount.ToString();
-
     }
 }

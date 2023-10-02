@@ -18,6 +18,12 @@ TagManager:
   - Refined Iron
   - Mineral Machine
   - Phone
+  - Mine Delivery
+  - Phone Delivery
+  - Silicon Delivery
+  - Product Delivery
+  - Spawn Delivery
+  - Park
   layers:
   - Default
   - TransparentFX

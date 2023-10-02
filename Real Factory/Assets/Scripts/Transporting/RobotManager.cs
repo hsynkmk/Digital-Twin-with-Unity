@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using UnityEngine.UI;
 using Unity.VisualScripting;
 
 public class RobotManager : MonoBehaviour
 {
-    //[SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private Transform mineDelivery;
     [SerializeField] private Transform siliconDelivery;
     [SerializeField] private Transform productDelivery;
@@ -57,13 +57,13 @@ public class RobotManager : MonoBehaviour
     {
         for (int i = 0; i < robotList.Count; i++)
         {
-            //TextMeshPro robotText = robotList[i].transformRobot.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+
             //robotText.text = robotList[i].BatteryManager();
             //robotText.transform.LookAt(2 * robotText.transform.position - Camera.main.transform.position);
-            robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(2).GetComponent<TextMeshProUGUI>().text = (i + 1).ToString();
+            robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>().text = (i + 1).ToString();
             robotList[i].transformRobot.GetChild(0).GetChild(2).GetComponent<TextMeshPro>().text = (i + 1).ToString();
 
-            TextMeshProUGUI batteryText = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI batteryText = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(2).GetComponent<TextMeshProUGUI>();
             batteryText.text = robotList[i].BatteryManager();
         }
     }
@@ -74,9 +74,23 @@ public class RobotManager : MonoBehaviour
 
         for (int i = 0; i < robotList.Count; i++)
         {
+            Slider batterySlider = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(0).GetComponent<Slider>();
+            TextMeshProUGUI batteryValue = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(2).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI positionText = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(4).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI targetText = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(5).GetComponent<TextMeshProUGUI>();
+
             if (robotList[i].robotState == RobotState.OnPark)
             {
                 fullParks++;
+            }
+
+            batterySlider.value = robotList[i].robotBattery;
+            batteryValue.text = batterySlider.value.ToString("00.00");
+            positionText.text = $"Position: {robotList[i].transformRobot.position.x.ToString("0.0")} {robotList[i].transformRobot.position.y.ToString("0.0")} {robotList[i].transformRobot.position.z.ToString("0.0")}";
+
+            if (robotList[i].transformTarget != null)
+            {
+                targetText.text = "Target: " + robotList[i].transformTarget.tag;
             }
         }
 
