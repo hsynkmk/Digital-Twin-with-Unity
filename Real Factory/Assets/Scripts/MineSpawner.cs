@@ -1,23 +1,24 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragAndDropMine : MonoBehaviour
+public class MineSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] minePrefabs; // Array of mine prefabs
-    [SerializeField] private Transform resourceObject; // Parent transform for placed mines
-    [SerializeField] private Transform spawnPosition; // The position to place the mine prefab
+    [SerializeField] private TextMeshProUGUI infoText;
+    private static int cooperCount;
+    private static int ironCount;
+    private static int siliconCount;
+
+    /// <summary>
+    ///     Spawn manager for mining objects
+    ///     When the mine buttons clicked, the selected mining object's transform is added to the queue
+    ///     The Instantiate process is managed in the RobotManager script
+    /// </summary>
 
     private GameObject selectedMinePrefab; // The currently selected mine prefab
 
     private void Update()
-    {
-
-        TryPlaceMine();
-
-    }
-
-    // Attempt to place the selected mine prefab
-    private void TryPlaceMine()
     {
         if (selectedMinePrefab != null)
         {
@@ -30,6 +31,8 @@ public class DragAndDropMine : MonoBehaviour
     private void PlaceMinePrefabAt()
     {
         ResourceManager.availableResources.Enqueue(selectedMinePrefab.transform);
+
+        infoText.text += $"{selectedMinePrefab.tag}\n";
     }
 
     // Select a mine from the build menu
@@ -51,5 +54,15 @@ public class DragAndDropMine : MonoBehaviour
     private void ClearSelectedMine()
     {
         selectedMinePrefab = null;
+    }
+
+    public void UpdateInfoText()
+    {
+        if (selectedMinePrefab.CompareTag("Cooper Mine"))
+            cooperCount++;
+        else if (selectedMinePrefab.CompareTag("Iron Mine"))
+            ironCount++;
+        else if (selectedMinePrefab.CompareTag("Silicon"))
+            siliconCount++;
     }
 }

@@ -5,21 +5,25 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cooper Mine
+  - Silicon
   - Iron Mine
+  - Conveyor
+  - Chip
   - INOTA
   - robot
   - InotaBody
-  - Conveyor
+  - Gold Mine
   - Refined Copper
+  - Refined Gold
   - Refined Iron
   - Mineral Machine
-  - Silicon
-  - Chip
   - Phone
-  - Silicon Place
-  - Mineral Place
-  - Truck Place
-  - Ground
+  - Mine Delivery
+  - Phone Delivery
+  - Silicon Delivery
+  - Product Delivery
+  - Spawn Delivery
+  - Park
   layers:
   - Default
   - TransparentFX

@@ -37,7 +37,7 @@ public class MineralProcessingMachine : MonoBehaviour
     // Perform the conversion process for the given mineral index
     private IEnumerator PerformConversion(int mineralIndex, Vector3 collisionPoint, Vector3 collisionNormal)
     {
-        Vector3 offset = collisionNormal * 3f;
+        Vector3 offset = collisionNormal * 3f + new Vector3(-1, 0, 0);
         Vector3 spawnPosition = collisionPoint + offset;
         GameObject refinedResult = refinedObjects[mineralIndex];
 

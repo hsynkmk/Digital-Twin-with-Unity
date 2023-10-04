@@ -9,7 +9,8 @@ public enum RobotState
     OnPark,
     OnResource,
     OnDelivery,
-    OnSpawn
+    OnSpawn,
+    OnProduct
 }
 
 public class Robot
@@ -79,6 +80,6 @@ public class Robot
 
         // Update the battery text for each robot
 
-        return "Battery: " + robotBattery.ToString() + "\nState: " + robotState.ToString();
+        return robotBattery.ToString();
     }
 }
