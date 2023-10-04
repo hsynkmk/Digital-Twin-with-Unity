@@ -31,6 +31,8 @@ public class MineSpawner : MonoBehaviour
     private void PlaceMinePrefabAt()
     {
         ResourceManager.availableResources.Enqueue(selectedMinePrefab.transform);
+
+        infoText.text += $"{selectedMinePrefab.tag}\n";
     }
 
     // Select a mine from the build menu
@@ -62,7 +64,5 @@ public class MineSpawner : MonoBehaviour
             ironCount++;
         else if (selectedMinePrefab.CompareTag("Silicon"))
             siliconCount++;
-
-        infoText.text = $"Spent Objects\nCooper: {cooperCount}\nIron: {ironCount}\nSilicon count: {siliconCount}";
     }
 }

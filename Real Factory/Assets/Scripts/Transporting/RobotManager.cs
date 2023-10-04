@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System;
 
 public class RobotManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class RobotManager : MonoBehaviour
     [SerializeField] private Transform spawnTransform;
     [SerializeField] private Transform spawnPosition;
     [SerializeField] private int minBattery = 60;
+    [SerializeField] private TextMeshProUGUI logText;
 
     public List<Robot> robotList = new List<Robot>();
     private int currentRobotIndex;
@@ -134,6 +136,7 @@ public class RobotManager : MonoBehaviour
                         GameObject newMine = Instantiate(robotList[i].transformTarget.transform.gameObject, spawnPosition.position + new Vector3(0, -1, 0), Quaternion.identity);
                         newMine.transform.SetParent(robotList[i].transformRobot);
                         robotList[i].robotState = RobotState.OnResource;
+                        UpdateLogText();
                     }
                     break;
 
@@ -151,25 +154,21 @@ public class RobotManager : MonoBehaviour
                         if (objectTag == "Silicon")
                         {
                             MoveRobotToSiliconDelivery(agent);
+                            robotList[i].transformTarget = siliconDelivery;
                             robotList[i].robotState = RobotState.OnDelivery;
                         }
                         else if (objectTag == "Iron Mine" || objectTag == "Cooper Mine")
                         {
                             MoveRobotToMineDelivery(agent);
+                            robotList[i].transformTarget = mineDelivery;
                             robotList[i].robotState = RobotState.OnDelivery;
                         }
                         else if (objectTag == "Phone")
                         {
                             MoveRobotToProductDelivery(agent);
+                            robotList[i].transformTarget = productDelivery;
                             robotList[i].robotState = RobotState.OnDelivery;
                         }
-                    }
-                    break;
-
-                case RobotState.OnProduct:
-                    if (!agent.pathPending && agent.remainingDistance < 0.1f)
-                    {
-
                     }
                     break;
 
@@ -184,10 +183,34 @@ public class RobotManager : MonoBehaviour
                         rb.AddForce(forceDirection * 7, ForceMode.Impulse);
 
                         MoveRobotToPark(i, agent);
+                        robotList[i].transformTarget = parkTransform;
                         robotList[i].robotState = RobotState.OnPark;
                     }
                     break;
             }
+        }
+    }
+
+    private void UpdateLogText()
+    {
+        string currentText = logText.text;
+
+        // Split the text by newline characters to create an array of lines.
+        string[] lines = currentText.Split('\n');
+
+        // Check if there is at least one line of text.
+        if (lines.Length > 1)
+        {
+            // Remove the first line.
+            string newText = string.Join("\n", lines, 1, lines.Length - 1);
+
+            // Update the TextMeshPro component with the modified text.
+            logText.text = newText;
+        }
+        else
+        {
+            // If there is only one line or no text, you can clear the TextMeshPro component.
+            logText.text = "";
         }
     }
 
