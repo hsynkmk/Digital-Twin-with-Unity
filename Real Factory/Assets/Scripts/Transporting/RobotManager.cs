@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
-using UnityEngine.UI;
-using Unity.VisualScripting;
 using System;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class RobotManager : MonoBehaviour
 {
@@ -17,6 +17,9 @@ public class RobotManager : MonoBehaviour
     [SerializeField] private Transform spawnPosition;
     [SerializeField] private int minBattery = 60;
     [SerializeField] private TextMeshProUGUI logText;
+
+    [SerializeField] private Transform robotInfoContent;
+    [SerializeField] private GameObject robotInfoPrefab;
 
     public List<Robot> robotList = new List<Robot>();
     private int currentRobotIndex;
@@ -51,7 +54,8 @@ public class RobotManager : MonoBehaviour
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            robotList.Add(new Robot(i, transform.GetChild(i), null, Park.GetIndex(i), RobotState.OnPark, false, 0f, 100));
+            GameObject newContent = Instantiate(robotInfoPrefab, robotInfoContent);
+            robotList.Add(new Robot(i, transform.GetChild(i), null, Park.GetIndex(i), RobotState.OnPark, false, 0f, 100, newContent.transform));
         }
     }
 
@@ -59,13 +63,10 @@ public class RobotManager : MonoBehaviour
     {
         for (int i = 0; i < robotList.Count; i++)
         {
-
-            //robotText.text = robotList[i].BatteryManager();
-            //robotText.transform.LookAt(2 * robotText.transform.position - Camera.main.transform.position);
-            robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>().text = (i + 1).ToString();
+            robotList[i].robotInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (i + 1).ToString();
             robotList[i].transformRobot.GetChild(0).GetChild(2).GetComponent<TextMeshPro>().text = (i + 1).ToString();
 
-            TextMeshProUGUI batteryText = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(2).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI batteryText = robotList[i].robotInfo.GetChild(3).GetComponent<TextMeshProUGUI>();
             batteryText.text = robotList[i].BatteryManager();
         }
     }
@@ -76,10 +77,10 @@ public class RobotManager : MonoBehaviour
 
         for (int i = 0; i < robotList.Count; i++)
         {
-            Slider batterySlider = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(0).GetComponent<Slider>();
-            TextMeshProUGUI batteryValue = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(2).GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI positionText = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(4).GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI targetText = robotList[i].transformRobot.GetChild(0).GetChild(3).GetChild(5).GetComponent<TextMeshProUGUI>();
+            UnityEngine.UI.Slider batterySlider = robotList[i].robotInfo.GetChild(2).GetComponent<UnityEngine.UI.Slider>();
+            TextMeshProUGUI batteryValue = robotList[i].robotInfo.GetChild(3).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI positionText = robotList[i].robotInfo.GetChild(4).GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI targetText = robotList[i].robotInfo.GetChild(5).GetComponent<TextMeshProUGUI>();
 
             if (robotList[i].robotState == RobotState.OnPark)
             {
@@ -235,6 +236,13 @@ public class RobotManager : MonoBehaviour
             }
         }
     }
+
+
+
+
+
+
+
 
     private void MoveRobotToSpawnLocation(NavMeshAgent agent)
     {

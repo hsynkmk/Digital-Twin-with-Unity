@@ -19,6 +19,7 @@ public class Robot
     public Transform transformRobot { get; set; }
     public Transform transformTarget { get; set; }
     public Transform transformPark { get; set; }
+    public Transform robotInfo;
 
     public RobotState robotState { get; set; }
     public bool hasReachedDest { get; set; }
@@ -26,7 +27,7 @@ public class Robot
     public int robotBattery { get; set; }
     public int minBattery { get; set; }
 
-    public Robot(int robotID, Transform transformRobot, Transform transformTarget, Transform transformPark, RobotState robotState, bool hasReachedDest, float timer, int robotBattery)
+    public Robot(int robotID, Transform transformRobot, Transform transformTarget, Transform transformPark, RobotState robotState, bool hasReachedDest, float timer, int robotBattery, Transform robotInfo)
     {
         this.robotID = robotID;
         this.transformRobot = transformRobot;
@@ -36,6 +37,7 @@ public class Robot
         this.hasReachedDest = hasReachedDest;
         this.timer = timer;
         this.robotBattery = robotBattery;
+        this.robotInfo = robotInfo;
     }
 
     public string BatteryManager()

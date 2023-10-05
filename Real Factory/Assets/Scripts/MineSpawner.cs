@@ -2,6 +2,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+    /// <summary>
+    ///     Spawn manager for mining objects
+    ///     When the mine buttons clicked, the selected mining object's transform is added to the queue
+    ///     The Instantiate process is managed in the RobotManager script
+    /// </summary>
+
 public class MineSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] minePrefabs; // Array of mine prefabs
@@ -9,12 +15,6 @@ public class MineSpawner : MonoBehaviour
     private static int cooperCount;
     private static int ironCount;
     private static int siliconCount;
-
-    /// <summary>
-    ///     Spawn manager for mining objects
-    ///     When the mine buttons clicked, the selected mining object's transform is added to the queue
-    ///     The Instantiate process is managed in the RobotManager script
-    /// </summary>
 
     private GameObject selectedMinePrefab; // The currently selected mine prefab
 
