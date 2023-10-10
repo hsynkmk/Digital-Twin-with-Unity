@@ -56,7 +56,7 @@ public class RobotManager : MonoBehaviour
     private void InitializeRobots()
     {
         // Create robots and display their information
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount / 2; i++)
         {
             GameObject newContent = Instantiate(robotInfoPrefab, robotInfoContent);
             robotList.Add(new Robot(i, transform.GetChild(i), null, Park.GetIndex(i), RobotState.OnPark, false, 0f, 100, newContent.transform));

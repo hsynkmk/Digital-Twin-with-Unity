@@ -5412,7 +5412,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 9067190631354719806}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.38
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -5438,7 +5438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.38
   m_Height: 0.27
   m_WalkableMask: -1
   m_Speed: 3.5
@@ -5458,7 +5458,7 @@ MonoBehaviour:
   m_BlockSpeedThreshold: 1
   m_UnblockAfterDuration: 1
   m_TimeToUnblock: 1
-  m_DistanceReductionThreshold: 0.5
+  m_DistanceReductionThreshold: 1
   m_UnblockAtSpeed: 1
   m_UnblockSpeedThreshold: 1
   m_CarvingMoveThreshold: 0.5

@@ -2,6 +2,7 @@ using UnityEngine.AI;
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 
 // Enum to represent the different states of the robot
 public enum RobotState
@@ -50,6 +51,11 @@ public class Robot
 
         if (robotState == RobotState.OnPark && !agent.pathPending && agent.remainingDistance < 0.1f)
         {
+            Quaternion targetRotation = Quaternion.Slerp(transformRobot.rotation, Quaternion.Euler(Vector3.forward), 0.05f);
+
+            // Set the object's rotation to the calculated rotation
+            transformRobot.rotation = targetRotation;
+
             Light parkLight = Park.parkTransform.GetChild(robotID).GetChild(2).GetComponent<Light>();
             parkLight.enabled = true;
             if (timer >= decreaseInterval && robotBattery < 100)
