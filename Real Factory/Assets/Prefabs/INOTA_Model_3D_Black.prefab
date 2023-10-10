@@ -5331,6 +5331,7 @@ GameObject:
   - component: {fileID: 9067190631354719801}
   - component: {fileID: 9067190631354719802}
   - component: {fileID: 2003460224621349099}
+  - component: {fileID: 4079943681920104846}
   m_Layer: 7
   m_Name: INOTA_Model_3D_Black
   m_TagString: INOTA
@@ -5352,7 +5353,7 @@ Transform:
   m_Children:
   - {fileID: 9067190630173370259}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &9067190631354719801
 BoxCollider:
@@ -5373,8 +5374,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.578331, y: 0.23787874, z: 0.7376108}
-  m_Center: {x: 0.00044250488, y: 0.16, z: -0.012489796}
+  m_Size: {x: 0.5442788, y: 0.23787875, z: 0.69853824}
+  m_Center: {x: -0.0043568136, y: 0.16, z: -0.0039916993}
 --- !u!54 &9067190631354719802
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5400,7 +5401,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 16
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!195 &2003460224621349099
 NavMeshAgent:
@@ -5412,18 +5413,58 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 4
+  m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 1
+  avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.25
+  m_Height: 0.27
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4079943681920104846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9067190631354719806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84445bc6a41d8bd43a4f3e5b7bc8cfdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Height: 0.27
+  m_WalkableMask: -1
+  m_Speed: 3.5
+  m_Acceleration: 8
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0.3
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_BaseOffset: 0
+  m_ObstacleAvoidanceType: 4
+  m_AvoidancePriority: 50
+  m_UpdateRotation: 1
+  m_DuplicateAgent: 1
+  m_BlockAfterDuration: 1
+  m_TimeToBlock: 1
+  m_BlockSpeedThreshold: 1
+  m_UnblockAfterDuration: 1
+  m_TimeToUnblock: 1
+  m_DistanceReductionThreshold: 0.5
+  m_UnblockAtSpeed: 1
+  m_UnblockSpeedThreshold: 1
+  m_CarvingMoveThreshold: 0.5
+  m_TimeToStationary: 0.5
+  m_CarveOnlyStationary: 0
+  hiddenAgentGameObject: {fileID: 0}
 --- !u!1 &9067190631366454922
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,56 +2,60 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
-using System;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
+using Unity.AI.Navigation;
 
 public class RobotManager : MonoBehaviour
 {
-    [SerializeField] private Transform mineDelivery;
-    [SerializeField] private Transform siliconDelivery;
-    [SerializeField] private Transform productDelivery;
-    [SerializeField] private Transform productLocation;
-    [SerializeField] private Transform parkTransform;
-    [SerializeField] private Transform spawnTransform;
-    [SerializeField] private Transform spawnPosition;
-    [SerializeField] private int minBattery = 60;
-    [SerializeField] private TextMeshProUGUI logText;
+    // Serialized fields to assign in the Unity Inspector
+    [SerializeField] private Transform mineDelivery;        // Delivery point for mined resources
+    [SerializeField] private Transform siliconDelivery;     // Delivery point for silicon
+    [SerializeField] private Transform productDelivery;     // Delivery point for finished products
+    [SerializeField] private Transform productLocation;     // Location for assembling products
+    [SerializeField] private Transform parkTransform;       // Location where robots park
+    [SerializeField] private Transform spawnTransform;      // Location where robots spawn
+    [SerializeField] private Transform spawnPosition;       // Position within the spawn location
+    [SerializeField] private int minBattery = 60;           // Minimum battery level for robots
+    [SerializeField] private TextMeshProUGUI logText;       // TextMeshPro for logging robot actions
 
-    [SerializeField] private Transform robotInfoContent;
-    [SerializeField] private GameObject robotInfoPrefab;
+    [SerializeField] private Transform robotInfoContent;    // Content for displaying robot information
+    [SerializeField] private GameObject robotInfoPrefab;    // Prefab for displaying robot information
 
-    public List<Robot> robotList = new List<Robot>();
-    private int currentRobotIndex;
-    private int deliveredObjects;
-    private int remainingObjects;
+    public List<Robot> robotList = new List<Robot>();       // List to store robot objects
+    private int currentRobotIndex;                          // Index of the current robot
+    private int deliveredObjects;                           // Count of delivered objects
+    private int remainingObjects;                           // Count of remaining objects
 
     private void Awake()
     {
+        // Initialize the park settings
         Park.parkTransform = parkTransform;
         Park.Initialize();
     }
 
     private void Start()
     {
+        // Initialize the robots
         InitializeRobots();
     }
 
     private void Update()
     {
+        // Check if resources are available and start the next robot
         if (ResourceManager.HasAvailableResources())
             StartNextRobot();
 
+        // Update UI information
         UpdateInfoText();
         UpdateBatteryText();
 
+        // Update park states and move robots
         UpdateParkStates();
         MoveRobots();
-
     }
 
     private void InitializeRobots()
     {
+        // Create robots and display their information
         for (int i = 0; i < transform.childCount; i++)
         {
             GameObject newContent = Instantiate(robotInfoPrefab, robotInfoContent);
@@ -61,6 +65,7 @@ public class RobotManager : MonoBehaviour
 
     private void UpdateBatteryText()
     {
+        // Update battery levels in UI
         for (int i = 0; i < robotList.Count; i++)
         {
             robotList[i].robotInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (i + 1).ToString();
@@ -96,8 +101,6 @@ public class RobotManager : MonoBehaviour
                 targetText.text = "Target: " + robotList[i].transformTarget.tag;
             }
         }
-
-        //infoText.text = $"\r\nFull parks: {fullParks}/{Park.parkTransform.childCount}\r\n\nRemaining objects: {remainingObjects}\r\nDelivered objects: {deliveredObjects}";
     }
 
     private void UpdateParkStates()
@@ -237,17 +240,11 @@ public class RobotManager : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
-
     private void MoveRobotToSpawnLocation(NavMeshAgent agent)
     {
         agent.SetDestination(spawnTransform.position);
     }
+
     private void MoveRobotToProductLocation(NavMeshAgent agent)
     {
         agent.SetDestination(productLocation.position);
