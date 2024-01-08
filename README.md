@@ -1,4 +1,4 @@
-# Internship
+# Digital Twin with Unity
 This repository includes projects made with UNITY for my internship.<br>
 Unity editor version: 2022.3.4f1
 ## 1. Factory Production System
